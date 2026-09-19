@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hệ thống nhắc nợ</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eef4ff, #f8fbff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 35px;
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+
+    .logo {
+      width: 65px;
+      height: 65px;
+      margin: 0 auto 18px;
+      border-radius: 16px;
+      background: #1769ff;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 8px;
+      font-size: 24px;
+      color: #172033;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #718096;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+      color: #374151;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d7dce5;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 16px;
+    }
+
+    input:focus {
+      border-color: #1769ff;
+      box-shadow: 0 0 0 3px rgba(23,105,255,0.1);
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      background: #1769ff;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0f56d6;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 9px;
+      display: none;
+      font-size: 14px;
+    }
+
+    .error {
+      display: block;
+      background: #fff1f2;
+      color: #be123c;
+    }
+
+    .success {
+      display: block;
+      background: #ecfdf5;
+      color: #047857;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+
+    <div class="logo">VP</div>
+
+    <h1>HỆ THỐNG NHẮC NỢ</h1>
+
+    <div class="subtitle">
+      Đăng nhập tài khoản được cấp quyền
+    </div>
+
+    <form id="loginForm">
+
+      <label for="email">Gmail</label>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="Nhập Gmail"
+        autocomplete="username"
+        required
+      >
+
+      <label for="password">Mật khẩu</label>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Nhập mật khẩu"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit" id="loginBtn">
+        ĐĂNG NHẬP
+      </button>
+
+    </form>
+
+    <div id="message" class="message"></div>
+
+  </div>
+
+
+<script>
+
+  // ============================================================
+  // SUPABASE
+  // ============================================================
+
+  const SUPABASE_URL =
+    "https://isxvczpecvklrqfozehw.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_IYmVGfP-zGJSIWx-nqA4IA_FLNziitb";
+
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+  // ============================================================
+  // HIỂN THỊ THÔNG BÁO
+  // ============================================================
+
+  function showMessage(text, type = "error") {
+
+    const message =
+      document.getElementById("message");
+
+    message.textContent = text;
+
+    message.className =
+      "message " + type;
+  }
+
+
+  // ============================================================
+  // KIỂM TRA ĐĂNG NHẬP
+  // ============================================================
+
+  async function checkLogin() {
+
+    const {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (session) {
+
+      showMessage(
+        "Bạn đã đăng nhập. Chuẩn bị vào hệ thống...",
+        "success"
+      );
+
+      // V1 sau này sẽ chuyển sang trang chính
+      // window.location.href = "app.html";
+    }
+  }
+
+
+  // ============================================================
+  // ĐĂNG NHẬP
+  // ============================================================
+
+  document
+    .getElementById("loginForm")
+    .addEventListener("submit", async function(e) {
+
+      e.preventDefault();
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+      const loginBtn =
+        document.getElementById("loginBtn");
+
+      loginBtn.disabled = true;
+
+      loginBtn.textContent = "ĐANG ĐĂNG NHẬP...";
+
+      showMessage("", "success");
+
+      const {
+        data,
+        error
+      } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+
+        console.error(error);
+
+        showMessage(
+          "Đăng nhập thất bại: " + error.message,
+          "error"
+        );
+
+        loginBtn.disabled = false;
+        loginBtn.textContent = "ĐĂNG NHẬP";
+
+        return;
+      }
+
+      console.log("Đăng nhập thành công:", data);
+
+      showMessage(
+        "Đăng nhập thành công!",
+        "success"
+      );
+
+      /*
+        Tạm thời chưa chuyển trang.
+        Khi V1 hoàn thiện, chúng ta sẽ chuyển:
+        
+        window.location.href = "app.html";
+      */
+
+      loginBtn.disabled = false;
+      loginBtn.textContent = "ĐĂNG NHẬP";
+
+    });
+
+
+  // ============================================================
+  // CHẠY KIỂM TRA
+  // ============================================================
+
+  checkLogin();
+
+</script>
+
+</body>
+</html>
