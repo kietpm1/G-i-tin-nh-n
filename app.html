@@ -10,7 +10,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Quản Lý Nhắc Nợ</title>
+  <title>Hệ Thống Nhắc Nợ</title>
 
   <!-- =====================================================
        SUPABASE
@@ -20,7 +20,7 @@
 
 
   <!-- =====================================================
-       SHEETJS - ĐỌC FILE EXCEL
+       SHEETJS - ĐỌC EXCEL
   ====================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -37,6 +37,12 @@
       font-family: Arial, Helvetica, sans-serif;
       background: #f3f6fb;
       color: #172033;
+    }
+
+    button,
+    input,
+    textarea {
+      font-family: inherit;
     }
 
 
@@ -63,21 +69,21 @@
 
       gap: 20px;
 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 15px rgba(0,0,0,.12);
     }
 
-    .header-left h1 {
+    .header h1 {
       margin: 0;
 
       font-size: 22px;
     }
 
-    .header-left p {
-      margin: 5px 0 0;
+    .header p {
+      margin: 6px 0 0;
 
       font-size: 14px;
 
-      opacity: 0.9;
+      opacity: .9;
     }
 
     .logout-btn {
@@ -106,7 +112,9 @@
     ====================================================== */
 
     .container {
-      max-width: 1400px;
+      width: 100%;
+
+      max-width: 1450px;
 
       margin: auto;
 
@@ -115,7 +123,7 @@
 
 
     /* =====================================================
-       TOP ACTIONS
+       ACTION CARDS
     ====================================================== */
 
     .action-grid {
@@ -132,12 +140,12 @@
     .action-card {
       background: white;
 
-      border-radius: 15px;
-
       padding: 20px;
 
+      border-radius: 15px;
+
       box-shadow:
-        0 4px 15px rgba(0,0,0,0.06);
+        0 4px 15px rgba(0,0,0,.06);
     }
 
     .action-card h2 {
@@ -151,7 +159,7 @@
 
       font-size: 14px;
 
-      margin-bottom: 15px;
+      margin: 7px 0 15px;
     }
 
     .file-label {
@@ -182,6 +190,10 @@
       display: none;
     }
 
+    #fileStatus {
+      min-height: 18px;
+    }
+
 
     /* =====================================================
        FORM
@@ -195,7 +207,7 @@
       padding: 20px;
 
       box-shadow:
-        0 4px 15px rgba(0,0,0,0.06);
+        0 4px 15px rgba(0,0,0,.06);
 
       margin-bottom: 20px;
     }
@@ -224,28 +236,26 @@
     }
 
     .field label {
+      font-size: 14px;
+
       font-weight: bold;
 
       margin-bottom: 7px;
-
-      font-size: 14px;
     }
 
     .field input,
     .field textarea {
       width: 100%;
 
+      padding: 12px;
+
       border: 1px solid #d8dee9;
 
       border-radius: 9px;
 
-      padding: 12px;
-
-      font-size: 14px;
-
       outline: none;
 
-      font-family: inherit;
+      font-size: 14px;
     }
 
     .field input:focus,
@@ -253,7 +263,7 @@
       border-color: #1769ff;
 
       box-shadow:
-        0 0 0 3px rgba(23,105,255,0.10);
+        0 0 0 3px rgba(23,105,255,.10);
     }
 
     .field textarea {
@@ -308,7 +318,7 @@
       border-radius: 14px;
 
       box-shadow:
-        0 4px 15px rgba(0,0,0,0.05);
+        0 4px 15px rgba(0,0,0,.05);
     }
 
     .stat-title {
@@ -338,7 +348,7 @@
       padding: 20px;
 
       box-shadow:
-        0 4px 15px rgba(0,0,0,0.06);
+        0 4px 15px rgba(0,0,0,.06);
     }
 
     .list-header {
@@ -358,9 +368,9 @@
     }
 
     .search {
-      width: 280px;
+      width: 300px;
 
-      padding: 11px;
+      padding: 11px 13px;
 
       border: 1px solid #d8dee9;
 
@@ -383,15 +393,15 @@
 
       border-collapse: collapse;
 
-      min-width: 1050px;
+      min-width: 1150px;
     }
 
     th {
-      background: #f1f5f9;
-
-      text-align: left;
+      background: #eef3f9;
 
       padding: 12px;
+
+      text-align: left;
 
       font-size: 13px;
 
@@ -414,13 +424,13 @@
 
 
     /* =====================================================
-       BUTTONS
+       TABLE BUTTONS
     ====================================================== */
 
     .btn {
       border: none;
 
-      padding: 8px 11px;
+      padding: 8px 10px;
 
       border-radius: 7px;
 
@@ -428,7 +438,13 @@
 
       font-weight: bold;
 
-      font-size: 13px;
+      font-size: 12px;
+
+      margin: 2px;
+    }
+
+    .btn:hover {
+      opacity: .85;
     }
 
     .btn-view {
@@ -449,8 +465,10 @@
       color: #dc2626;
     }
 
-    .btn:hover {
-      opacity: 0.85;
+    .btn-copy {
+      background: #fef3c7;
+
+      color: #92400e;
     }
 
 
@@ -478,9 +496,9 @@
 
       inset: 0;
 
-      background: rgba(0,0,0,0.55);
-
       z-index: 1000;
+
+      background: rgba(0,0,0,.55);
 
       align-items: center;
 
@@ -494,18 +512,18 @@
     }
 
     .modal-box {
-      background: white;
-
       width: 100%;
 
-      max-width: 600px;
+      max-width: 620px;
+
+      background: white;
 
       border-radius: 16px;
 
       padding: 22px;
 
       box-shadow:
-        0 15px 50px rgba(0,0,0,0.25);
+        0 15px 50px rgba(0,0,0,.25);
     }
 
     .modal-header {
@@ -555,13 +573,16 @@
 
       font-size: 14px;
 
-      max-height: 350px;
+      max-height: 380px;
 
       overflow-y: auto;
     }
 
     .modal-actions {
-      display: flex;
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
 
       gap: 10px;
 
@@ -569,15 +590,7 @@
     }
 
     .modal-actions button {
-      flex: 1;
-    }
-
-    .sms-btn {
       border: none;
-
-      background: #16a34a;
-
-      color: white;
 
       padding: 12px;
 
@@ -588,20 +601,54 @@
       cursor: pointer;
     }
 
-    .cancel-btn {
-      border: none;
-
+    .modal-close {
       background: #e5e7eb;
 
       color: #374151;
+    }
 
-      padding: 12px;
+    .modal-copy {
+      background: #fef3c7;
 
-      border-radius: 9px;
+      color: #92400e;
+    }
 
-      font-weight: bold;
+    .modal-send {
+      background: #16a34a;
 
-      cursor: pointer;
+      color: white;
+    }
+
+
+    /* =====================================================
+       TOAST
+    ====================================================== */
+
+    .toast {
+      position: fixed;
+
+      right: 20px;
+
+      bottom: 20px;
+
+      z-index: 2000;
+
+      background: #172033;
+
+      color: white;
+
+      padding: 13px 17px;
+
+      border-radius: 10px;
+
+      display: none;
+
+      box-shadow:
+        0 8px 25px rgba(0,0,0,.2);
+    }
+
+    .toast.show {
+      display: block;
     }
 
 
@@ -609,7 +656,7 @@
        MOBILE
     ====================================================== */
 
-    @media (max-width: 700px) {
+    @media (max-width: 750px) {
 
       .header {
         flex-direction: column;
@@ -641,6 +688,10 @@
         width: 100%;
       }
 
+      .modal-actions {
+        grid-template-columns: 1fr;
+      }
+
     }
 
   </style>
@@ -651,21 +702,24 @@
 <body>
 
 
-<!-- ==========================================================
+<!-- =====================================================
      HEADER
-=========================================================== -->
+====================================================== -->
 
 <header class="header">
 
-  <div class="header-left">
+  <div>
 
-    <h1>HỆ THỐNG NHẮC NỢ</h1>
+    <h1>
+      HỆ THỐNG NHẮC NỢ
+    </h1>
 
     <p id="currentUser">
       Đang kiểm tra tài khoản...
     </p>
 
   </div>
+
 
   <button
     class="logout-btn"
@@ -677,40 +731,40 @@
 </header>
 
 
-<!-- ==========================================================
+<!-- =====================================================
      MAIN
-=========================================================== -->
+====================================================== -->
 
 <main class="container">
 
 
-  <!-- ========================================================
-       IMPORT / MANUAL
-  ========================================================= -->
+  <!-- ===================================================
+       IMPORT
+  ==================================================== -->
 
   <section class="action-grid">
 
 
-    <!-- EXCEL -->
-
     <div class="action-card">
 
-      <h2>📁 Tải danh sách Excel</h2>
+      <h2>
+        📁 Tải danh sách Excel
+      </h2>
 
       <p>
-        Tải file Excel chứa danh sách khách hàng.
+        Chọn file Excel để đưa danh sách khách hàng vào hệ thống.
       </p>
 
       <label
-        for="excelFile"
         class="file-label"
+        for="excelFile"
       >
         CHỌN FILE EXCEL
       </label>
 
       <input
-        type="file"
         id="excelFile"
+        type="file"
         accept=".xlsx,.xls,.csv"
       >
 
@@ -719,11 +773,11 @@
     </div>
 
 
-    <!-- MANUAL -->
-
     <div class="action-card">
 
-      <h2>✍️ Nhập thủ công</h2>
+      <h2>
+        ✍️ Nhập thủ công
+      </h2>
 
       <p>
         Thêm từng khách hàng trực tiếp trên web.
@@ -741,16 +795,19 @@
   </section>
 
 
-  <!-- ========================================================
+  <!-- ===================================================
        MANUAL FORM
-  ========================================================= -->
+  ==================================================== -->
 
   <section
     class="form-card"
     id="manualForm"
   >
 
-    <h2>Thêm khách hàng</h2>
+    <h2>
+      Thêm khách hàng
+    </h2>
+
 
     <div class="form-grid">
 
@@ -794,6 +851,7 @@
         <input
           id="amountInput"
           type="text"
+          inputmode="numeric"
           placeholder="25.000.000"
         >
 
@@ -858,11 +916,12 @@
   </section>
 
 
-  <!-- ========================================================
+  <!-- ===================================================
        STATS
-  ========================================================= -->
+  ==================================================== -->
 
   <section class="stats">
+
 
     <div class="stat-card">
 
@@ -911,18 +970,22 @@
 
     </div>
 
+
   </section>
 
 
-  <!-- ========================================================
+  <!-- ===================================================
        CUSTOMER LIST
-  ========================================================= -->
+  ==================================================== -->
 
   <section class="list-card">
 
+
     <div class="list-header">
 
-      <h2>Danh sách khách hàng</h2>
+      <h2>
+        Danh sách khách hàng
+      </h2>
 
       <input
         id="searchInput"
@@ -942,21 +1005,37 @@
 
           <tr>
 
-            <th>STT</th>
+            <th>
+              STT
+            </th>
 
-            <th>Họ và tên</th>
+            <th>
+              Họ và tên
+            </th>
 
-            <th>SĐT KH</th>
+            <th>
+              SĐT KH
+            </th>
 
-            <th>Số tiền</th>
+            <th>
+              Số tiền
+            </th>
 
-            <th>Trễ hạn</th>
+            <th>
+              Trễ hạn
+            </th>
 
-            <th>Thông tin nợ</th>
+            <th>
+              Thông tin nợ
+            </th>
 
-            <th>SĐT hỗ trợ</th>
+            <th>
+              SĐT hỗ trợ
+            </th>
 
-            <th>Thao tác</th>
+            <th>
+              Thao tác
+            </th>
 
           </tr>
 
@@ -964,7 +1043,6 @@
 
 
         <tbody id="customerTableBody">
-
         </tbody>
 
       </table>
@@ -978,10 +1056,13 @@
     >
 
       Chưa có khách hàng.
+
       <br>
+
       Hãy tải Excel hoặc nhập thủ công.
 
     </div>
+
 
   </section>
 
@@ -989,9 +1070,9 @@
 </main>
 
 
-<!-- ==========================================================
+<!-- =====================================================
      MESSAGE MODAL
-=========================================================== -->
+====================================================== -->
 
 <div
   class="modal"
@@ -1018,22 +1099,31 @@
 
 
     <div
-      id="messagePreview"
       class="message-preview"
+      id="messagePreview"
     ></div>
 
 
     <div class="modal-actions">
 
       <button
-        class="cancel-btn"
+        class="modal-close"
         onclick="closeModal()"
       >
         ĐÓNG
       </button>
 
+
       <button
-        class="sms-btn"
+        class="modal-copy"
+        onclick="copyCurrentMessage()"
+      >
+        📋 SAO CHÉP
+      </button>
+
+
+      <button
+        class="modal-send"
         onclick="sendCurrentSMS()"
       >
         📱 GỬI TIN
@@ -1046,140 +1136,212 @@
 </div>
 
 
+<!-- =====================================================
+     TOAST
+====================================================== -->
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
 
 <script>
 
-  // ==========================================================
-  // SUPABASE
-  // ==========================================================
 
-  const SUPABASE_URL =
-    "https://isxvczpecvklrqfozehw.supabase.co";
+// ========================================================
+// SUPABASE
+// ========================================================
 
-  const SUPABASE_KEY =
-    "sb_publishable_IYmVGfP-zGJSIWx-nqA4IA_FLNziitb";
+const SUPABASE_URL =
+  "https://isxvczpecvklrqfozehw.supabase.co";
 
-
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+const SUPABASE_KEY =
+  "sb_publishable_IYmVGfP-zGJSIWx-nqA4IA_FLNziitb";
 
 
-  // ==========================================================
-  // DATA
-  // ==========================================================
-
-  let customers = [];
-
-  let currentCustomer = null;
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-  // ==========================================================
-  // AUTH CHECK
-  // ==========================================================
+// ========================================================
+// DATA
+// ========================================================
 
-  async function checkAuth() {
+let customers = [];
 
-    const {
-      data: { session },
-      error
-    } = await supabaseClient.auth.getSession();
+let currentCustomer = null;
 
 
-    if (error || !session) {
+// ========================================================
+// AUTH
+// ========================================================
 
-      window.location.href = "index.html";
+async function checkAuth() {
 
-      return;
-    }
+  const {
+    data: { session },
+    error
+  } =
+    await supabaseClient.auth.getSession();
 
 
-    document.getElementById("currentUser").textContent =
-      "Đang đăng nhập: " + session.user.email;
+  if (
+    error ||
+    !session
+  ) {
+
+    window.location.href =
+      "index.html";
+
+    return;
   }
 
 
-  checkAuth();
-
-
-  // ==========================================================
-  // LOGOUT
-  // ==========================================================
-
   document
-    .getElementById("logoutBtn")
-    .addEventListener("click", async () => {
+    .getElementById("currentUser")
+    .textContent =
+    "Đang đăng nhập: " +
+    session.user.email;
+}
+
+
+checkAuth();
+
+
+// ========================================================
+// LOGOUT
+// ========================================================
+
+document
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    async function() {
 
       await supabaseClient.auth.signOut();
 
-      window.location.href = "index.html";
+      window.location.href =
+        "index.html";
 
-    });
+    }
+  );
 
 
-  // ==========================================================
-  // FORMAT MONEY
-  // ==========================================================
+// ========================================================
+// TOAST
+// ========================================================
 
-  function formatMoney(value) {
+function showToast(text) {
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.textContent =
+    text;
+
+  toast.classList.add("show");
+
+
+  setTimeout(
+    function() {
+
+      toast.classList.remove("show");
+
+    },
+    2500
+  );
+}
+
+
+// ========================================================
+// PARSE MONEY
+// ========================================================
+
+function parseMoneyNumber(value) {
 
   if (
     value === null ||
     value === undefined ||
     value === ""
   ) {
-    return "0";
+
+    return 0;
   }
 
-  // Nếu Excel trả về kiểu number
-  if (typeof value === "number") {
 
-    if (!Number.isFinite(value)) {
-      return "0";
-    }
+  // Excel trả về number
 
-    return Math.round(value).toLocaleString("vi-VN");
-  }
-
-  let text = String(value).trim();
-
-  if (!text) {
-    return "0";
-  }
-
-  // Loại bỏ chữ "đ", "VND", khoảng trắng...
-  text = text
-    .replace(/đ/gi, "")
-    .replace(/vnd/gi, "")
-    .replace(/\s/g, "");
-
-  /*
-    Xử lý các dạng:
-
-    25000000
-    25,000,000
-    25.000.000
-    25 000 000
-  */
-
-  let number;
-
-  // Có cả dấu . và ,
   if (
-    text.includes(".") &&
-    text.includes(",")
+    typeof value === "number"
   ) {
 
-    // Ví dụ 25.000.000,50
-    const lastComma =
-      text.lastIndexOf(",");
+    if (
+      Number.isFinite(value)
+    ) {
+
+      return Math.round(value);
+
+    }
+
+    return 0;
+  }
+
+
+  let text =
+    String(value)
+      .trim()
+      .replace(/\s/g, "")
+      .replace(/đ/gi, "")
+      .replace(/vnd/gi, "");
+
+
+  if (!text) {
+
+    return 0;
+  }
+
+
+  /*
+    Các dạng hỗ trợ:
+
+    25000000
+    25.000.000
+    25,000,000
+    25.000.000,50
+    25,000,000.50
+  */
+
+
+  const hasDot =
+    text.includes(".");
+
+  const hasComma =
+    text.includes(",");
+
+
+  // Có cả . và ,
+
+  if (
+    hasDot &&
+    hasComma
+  ) {
 
     const lastDot =
       text.lastIndexOf(".");
 
-    if (lastComma > lastDot) {
+    const lastComma =
+      text.lastIndexOf(",");
+
+
+    if (
+      lastComma > lastDot
+    ) {
+
+      // 25.000.000,50
 
       text =
         text
@@ -1188,305 +1350,446 @@
 
     } else {
 
+      // 25,000,000.50
+
       text =
         text
           .replace(/,/g, "");
+
     }
 
   }
 
-  // Chỉ có dấu phẩy
-  else if (text.includes(",")) {
 
-    // Nếu là 25,000,000 -> bỏ dấu phẩy
+  // Chỉ có dấu phẩy
+
+  else if (
+    hasComma
+  ) {
+
     const parts =
       text.split(",");
 
+
+    /*
+      25,000,000
+      -> hàng nghìn
+    */
+
     if (
       parts.length > 2 ||
-      (parts.length === 2 &&
-       parts[1].length === 3)
+      (
+        parts.length === 2 &&
+        parts[1].length === 3
+      )
     ) {
 
       text =
         text.replace(/,/g, "");
 
-    } else {
+    }
+
+    else {
 
       text =
         text.replace(",", ".");
+
     }
 
   }
 
+
   // Chỉ có dấu chấm
-  else if (text.includes(".")) {
+
+  else if (
+    hasDot
+  ) {
 
     const parts =
       text.split(".");
 
-    // 25.000.000
+
+    /*
+      25.000.000
+      -> hàng nghìn
+    */
+
     if (
       parts.length > 2 ||
-      (parts.length === 2 &&
-       parts[1].length === 3)
+      (
+        parts.length === 2 &&
+        parts[1].length === 3
+      )
     ) {
 
       text =
         text.replace(/\./g, "");
 
     }
+
   }
 
-  // Chỉ lấy số
-  text =
-    text.replace(/[^\d.-]/g, "");
 
-  number =
+  // Chỉ giữ số
+
+  text =
+    text.replace(
+      /[^\d.-]/g,
+      ""
+    );
+
+
+  const number =
     Number(text);
+
 
   if (
     !Number.isFinite(number)
   ) {
 
-    return "0";
+    return 0;
   }
 
-  return Math.round(number)
-    .toLocaleString("vi-VN");
+
+  return Math.round(number);
 }
 
-  // ==========================================================
-  // CLEAN PHONE
-  // ==========================================================
 
-  function cleanPhone(value) {
+// ========================================================
+// FORMAT MONEY
+// ========================================================
+
+function formatMoney(value) {
+
+  const number =
+    parseMoneyNumber(value);
+
+
+  return number.toLocaleString(
+    "vi-VN"
+  );
+}
+
+
+// ========================================================
+// CLEAN PHONE
+// ========================================================
+
+function cleanPhone(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+  }
+
+
+  let phone =
+    String(value)
+      .trim()
+      .replace(/\s/g, "")
+      .replace(/-/g, "");
+
+
+  /*
+    Nếu Excel đọc số điện thoại thành
+    dạng 9.01234567E+9 thì cố gắng
+    chuyển về số nguyên.
+  */
+
+  if (
+    /e\+/i.test(phone)
+  ) {
+
+    const number =
+      Number(phone);
+
 
     if (
-      value === null ||
-      value === undefined
+      Number.isFinite(number)
     ) {
 
-      return "";
+      phone =
+        String(
+          Math.round(number)
+        );
+
     }
 
-
-    return String(value)
-      .replace(/\s+/g, "")
-      .replace(/-/g, "")
-      .trim();
   }
 
 
-  // ==========================================================
-  // FORMAT NUMBER INPUT
-  // ==========================================================
+  return phone;
+}
 
-  document
-    .getElementById("amountInput")
-    .addEventListener("input", function() {
 
-      let value =
-        this.value.replace(/[^\d]/g, "");
+// ========================================================
+// FORMAT AMOUNT INPUT
+// ========================================================
 
-      if (!value) {
+document
+  .getElementById("amountInput")
+  .addEventListener(
+    "input",
+    function() {
 
-        this.value = "";
+      const number =
+        parseMoneyNumber(
+          this.value
+        );
+
+
+      if (
+        number === 0 &&
+        this.value.trim() !== ""
+      ) {
 
         return;
       }
+
 
       this.value =
-        Number(value).toLocaleString("vi-VN");
+        number
+          ? number.toLocaleString("vi-VN")
+          : "";
 
-    });
+    }
+  );
 
 
-  // ==========================================================
-  // ADD MANUAL CUSTOMER
-  // ==========================================================
+// ========================================================
+// ADD MANUAL CUSTOMER
+// ========================================================
 
-  function addManualCustomer() {
+function addManualCustomer() {
 
-    const name =
+  const name =
+    document
+      .getElementById("nameInput")
+      .value
+      .trim();
+
+
+  const phone =
+    cleanPhone(
       document
-        .getElementById("nameInput")
+        .getElementById("phoneInput")
         .value
-        .trim();
+    );
 
 
-    const phone =
-      cleanPhone(
-        document
-          .getElementById("phoneInput")
-          .value
-      );
+  const amount =
+    parseMoneyNumber(
+      document
+        .getElementById("amountInput")
+        .value
+    );
 
 
-   const amount =
+  const days =
+    document
+      .getElementById("daysInput")
+      .value
+      .trim();
+
+
+  const debtInfo =
+    document
+      .getElementById("debtInfoInput")
+      .value
+      .trim();
+
+
+  const supportPhone =
+    cleanPhone(
+      document
+        .getElementById("supportPhoneInput")
+        .value
+    );
+
+
+  if (!name) {
+
+    alert(
+      "Vui lòng nhập họ và tên."
+    );
+
+    return;
+  }
+
+
+  if (!phone) {
+
+    alert(
+      "Vui lòng nhập SĐT khách hàng."
+    );
+
+    return;
+  }
+
+
+  customers.push({
+
+    name: name,
+
+    phone: phone,
+
+    amount: amount,
+
+    days: days,
+
+    debtInfo: debtInfo,
+
+    supportPhone: supportPhone
+
+  });
+
+
+  clearForm();
+
+  renderCustomers();
+
+  showToast(
+    "Đã thêm khách hàng."
+  );
+
+}
+
+
+// ========================================================
+// CLEAR FORM
+// ========================================================
+
+function clearForm() {
+
+  document
+    .getElementById("nameInput")
+    .value = "";
+
+
+  document
+    .getElementById("phoneInput")
+    .value = "";
+
+
   document
     .getElementById("amountInput")
-    .value
-    .trim();
-
-const amountNumber =
-  parseMoneyNumber(amount);
+    .value = "";
 
 
-    const days =
-      document
-        .getElementById("daysInput")
-        .value
-        .trim();
+  document
+    .getElementById("daysInput")
+    .value = "";
 
 
-    const debtInfo =
-      document
-        .getElementById("debtInfoInput")
-        .value
-        .trim();
+  document
+    .getElementById("debtInfoInput")
+    .value = "";
 
 
-    const supportPhone =
-      cleanPhone(
-        document
-          .getElementById("supportPhoneInput")
-          .value
+  document
+    .getElementById("supportPhoneInput")
+    .value = "";
+
+}
+
+
+// ========================================================
+// EXCEL FILE
+// ========================================================
+
+document
+  .getElementById("excelFile")
+  .addEventListener(
+    "change",
+    handleExcel
+  );
+
+
+// ========================================================
+// HANDLE EXCEL
+// ========================================================
+
+async function handleExcel(event) {
+
+  const file =
+    event.target.files[0];
+
+
+  if (!file) {
+
+    return;
+  }
+
+
+  document
+    .getElementById("fileStatus")
+    .textContent =
+    "⏳ Đang đọc file...";
+
+
+  try {
+
+    const buffer =
+      await file.arrayBuffer();
+
+
+    const workbook =
+      XLSX.read(
+        buffer,
+        {
+          type: "array"
+        }
       );
 
 
-    if (!name) {
+    if (
+      !workbook.SheetNames.length
+    ) {
 
-      alert("Vui lòng nhập họ và tên.");
+      throw new Error(
+        "Không tìm thấy sheet."
+      );
+    }
+
+
+    const sheet =
+      workbook.Sheets[
+        workbook.SheetNames[0]
+      ];
+
+
+    const rows =
+      XLSX.utils.sheet_to_json(
+        sheet,
+        {
+          defval: "",
+          raw: true
+        }
+      );
+
+
+    if (!rows.length) {
+
+      alert(
+        "File Excel không có dữ liệu."
+      );
+
+      event.target.value = "";
 
       return;
     }
 
 
-    if (!phone) {
+    let imported = 0;
 
-      alert("Vui lòng nhập SĐT khách hàng.");
-
-      return;
-    }
+    let skipped = 0;
 
 
-   customers.push({
-
-  name: name,
-
-  phone: phone,
-
-  amount: amountNumber,
-
-  days: days,
-
-  debtInfo: debtInfo,
-
-  supportPhone: supportPhone
-
-});
-
-
-    clearForm();
-
-    renderCustomers();
-
-    alert("Đã thêm khách hàng.");
-
-  }
-
-
-  // ==========================================================
-  // CLEAR FORM
-  // ==========================================================
-
-  function clearForm() {
-
-    document.getElementById("nameInput").value = "";
-
-    document.getElementById("phoneInput").value = "";
-
-    document.getElementById("amountInput").value = "";
-
-    document.getElementById("daysInput").value = "";
-
-    document.getElementById("debtInfoInput").value = "";
-
-    document.getElementById("supportPhoneInput").value = "";
-
-  }
-
-
-  // ==========================================================
-  // EXCEL UPLOAD
-  // ==========================================================
-
-  document
-    .getElementById("excelFile")
-    .addEventListener("change", handleExcel);
-
-
-  async function handleExcel(event) {
-
-    const file =
-      event.target.files[0];
-
-
-    if (!file) {
-
-      return;
-    }
-
-
-    document
-      .getElementById("fileStatus")
-      .textContent =
-      "⏳ Đang đọc file...";
-
-
-    try {
-
-      const buffer =
-        await file.arrayBuffer();
-
-
-      const workbook =
-        XLSX.read(
-          buffer,
-          {
-            type: "array"
-          }
-        );
-
-
-      const firstSheet =
-        workbook.Sheets[
-          workbook.SheetNames[0]
-        ];
-
-
-      const rows =
-        XLSX.utils.sheet_to_json(
-          firstSheet,
-          {
-            defval: ""
-          }
-        );
-
-
-      if (!rows.length) {
-
-        alert("File Excel không có dữ liệu.");
-
-        return;
-      }
-
-
-      let imported = 0;
-
-
-      rows.forEach(row => {
+    rows.forEach(
+      function(row) {
 
         const name =
           getExcelValue(
@@ -1495,8 +1798,8 @@ const amountNumber =
               "Họ và tên",
               "Ho va ten",
               "HỌ VÀ TÊN",
-              "Ho ten",
-              "Họ tên"
+              "Họ tên",
+              "Ho ten"
             ]
           );
 
@@ -1510,6 +1813,8 @@ const amountNumber =
                 "SDT khách hàng",
                 "Số điện thoại",
                 "So dien thoai",
+                "SĐT KH",
+                "SDT KH",
                 "SDT"
               ]
             )
@@ -1517,12 +1822,15 @@ const amountNumber =
 
 
         const amount =
-          getExcelValue(
-            row,
-            [
-              "Số tiền",
-              "So tien"
-            ]
+          parseMoneyNumber(
+            getExcelValue(
+              row,
+              [
+                "Số tiền",
+                "So tien",
+                "SỐ TIỀN"
+              ]
+            )
           );
 
 
@@ -1533,7 +1841,9 @@ const amountNumber =
               "Số ngày trễ hạn",
               "So ngay tre han",
               "Trễ hạn",
-              "Tre han"
+              "Tre han",
+              "Số ngày quá hạn",
+              "So ngay qua han"
             ]
           );
 
@@ -1545,7 +1855,8 @@ const amountNumber =
               "Thông tin nợ ở VPBank",
               "Thong tin no o VPBank",
               "Thông tin nợ",
-              "Thong tin no"
+              "Thong tin no",
+              "Thông tin khoản nợ"
             ]
           );
 
@@ -1558,13 +1869,16 @@ const amountNumber =
                 "SĐT người hỗ trợ",
                 "SDT nguoi ho tro",
                 "SĐT hỗ trợ",
-                "SDT ho tro"
+                "SDT ho tro",
+                "SĐT người HT"
               ]
             )
           );
 
 
-        if (!name) {
+        if (!String(name).trim()) {
+
+          skipped++;
 
           return;
         }
@@ -1572,165 +1886,192 @@ const amountNumber =
 
         customers.push({
 
-          name: String(name).trim(),
+          name:
+            String(name).trim(),
 
-          phone: phone,
+          phone:
+            phone,
 
-          amount: amount,
+          amount:
+            amount,
 
-          days: days,
+          days:
+            String(days).trim(),
 
-          debtInfo: String(debtInfo).trim(),
+          debtInfo:
+            String(debtInfo).trim(),
 
-          supportPhone: supportPhone
+          supportPhone:
+            supportPhone
 
         });
 
 
         imported++;
 
-      });
+      }
+    );
 
 
-      renderCustomers();
+    renderCustomers();
 
 
-      document
-        .getElementById("fileStatus")
-        .textContent =
-        `✅ Đã nhập ${imported} khách hàng`;
-
-
-      // Reset input để có thể chọn lại cùng file
-
-      event.target.value = "";
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        "Không đọc được file Excel. Vui lòng kiểm tra lại file."
+    document
+      .getElementById("fileStatus")
+      .textContent =
+      `✅ Đã nhập ${imported} khách hàng` +
+      (
+        skipped
+          ? ` | Bỏ qua ${skipped} dòng`
+          : ""
       );
 
-      document
-        .getElementById("fileStatus")
-        .textContent =
-        "❌ Lỗi đọc file";
 
+    event.target.value = "";
+
+
+  } catch (error) {
+
+    console.error(
+      "Lỗi Excel:",
+      error
+    );
+
+
+    alert(
+      "Không đọc được file Excel.\n\n" +
+      "Vui lòng kiểm tra lại tên cột và định dạng file."
+    );
+
+
+    document
+      .getElementById("fileStatus")
+      .textContent =
+      "❌ Lỗi đọc file";
+
+
+    event.target.value = "";
+
+  }
+
+}
+
+
+// ========================================================
+// GET EXCEL VALUE
+// ========================================================
+
+function getExcelValue(
+  row,
+  possibleNames
+) {
+
+  // Kiểm tra chính xác
+
+  for (
+    const name of possibleNames
+  ) {
+
+    if (
+      Object.prototype.hasOwnProperty.call(
+        row,
+        name
+      )
+    ) {
+
+      return row[name];
     }
 
   }
 
 
-  // ==========================================================
-  // GET EXCEL VALUE
-  // ==========================================================
+  // Kiểm tra không dấu
 
-  function getExcelValue(row, possibleNames) {
+  const keys =
+    Object.keys(row);
+
+
+  for (
+    const key of keys
+  ) {
+
+    const normalizedKey =
+      normalizeText(key);
+
 
     for (
-      const name of possibleNames
+      const possible of possibleNames
     ) {
 
       if (
-        Object.prototype.hasOwnProperty.call(
-          row,
-          name
-        )
+        normalizedKey ===
+        normalizeText(possible)
       ) {
 
-        return row[name];
-
+        return row[key];
       }
 
     }
-
-
-    // Tìm gần đúng không phân biệt hoa thường
-
-    const keys =
-      Object.keys(row);
-
-
-    for (
-      const key of keys
-    ) {
-
-      const normalizedKey =
-        normalizeText(key);
-
-
-      for (
-        const possible of possibleNames
-      ) {
-
-        if (
-          normalizedKey ===
-          normalizeText(possible)
-        ) {
-
-          return row[key];
-
-        }
-
-      }
-
-    }
-
-
-    return "";
 
   }
 
 
-  // ==========================================================
-  // NORMALIZE TEXT
-  // ==========================================================
+  return "";
 
-  function normalizeText(text) {
+}
 
-    return String(text)
+
+// ========================================================
+// NORMALIZE TEXT
+// ========================================================
+
+function normalizeText(text) {
+
+  return String(text)
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(/đ/g, "d");
+
+}
+
+
+// ========================================================
+// RENDER CUSTOMERS
+// ========================================================
+
+function renderCustomers() {
+
+  const tbody =
+    document.getElementById(
+      "customerTableBody"
+    );
+
+
+  const empty =
+    document.getElementById(
+      "emptyMessage"
+    );
+
+
+  const search =
+    document
+      .getElementById("searchInput")
+      .value
       .trim()
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-
-  }
+      .toLowerCase();
 
 
-  // ==========================================================
-  // RENDER CUSTOMERS
-  // ==========================================================
-
-  function renderCustomers() {
-
-    const tbody =
-      document.getElementById(
-        "customerTableBody"
-      );
+  tbody.innerHTML = "";
 
 
-    const empty =
-      document.getElementById(
-        "emptyMessage"
-      );
-
-
-    const search =
-      document
-        .getElementById("searchInput")
-        .value
-        .trim()
-        .toLowerCase();
-
-
-    tbody.innerHTML = "";
-
-
-    const filtered =
-      customers.filter(customer => {
+  const filtered =
+    customers.filter(
+      function(customer) {
 
         const text =
           (
@@ -1741,408 +2082,553 @@ const amountNumber =
           .toLowerCase();
 
 
-        return text.includes(search);
-
-      });
-
-
-    if (!filtered.length) {
-
-      empty.style.display = "block";
-
-    } else {
-
-      empty.style.display = "none";
-
-    }
-
-
-    filtered.forEach(
-      (customer, index) => {
-
-        const realIndex =
-          customers.indexOf(customer);
-
-
-        const tr =
-          document.createElement("tr");
-
-
-        tr.innerHTML = `
-
-          <td>${index + 1}</td>
-
-          <td>
-            <strong>
-              ${escapeHtml(customer.name)}
-            </strong>
-          </td>
-
-          <td>
-            ${customer.phone
-              ? escapeHtml(customer.phone)
-              : '<span style="color:#dc2626">Chưa có</span>'
-            }
-          </td>
-
-          <td>
-            ${formatMoney(customer.amount)} đ
-          </td>
-
-          <td>
-            ${escapeHtml(String(customer.days || ""))} ngày
-          </td>
-
-          <td>
-            ${escapeHtml(customer.debtInfo || "")}
-          </td>
-
-          <td>
-            ${escapeHtml(customer.supportPhone || "")}
-          </td>
-
-          <td>
-
-            <button
-              class="btn btn-view"
-              onclick="viewMessage(${realIndex})"
-            >
-              👁 XEM
-            </button>
-
-            <button
-              class="btn btn-send"
-              onclick="viewMessage(${realIndex})"
-            >
-              📱 GỬI
-            </button>
-
-            <button
-              class="btn btn-delete"
-              onclick="deleteCustomer(${realIndex})"
-            >
-              XÓA
-            </button>
-
-          </td>
-
-        `;
-
-
-        tbody.appendChild(tr);
+        return text.includes(
+          search
+        );
 
       }
     );
 
 
-    updateStats();
+  empty.style.display =
+    filtered.length
+      ? "none"
+      : "block";
 
-  }
+
+  filtered.forEach(
+    function(customer, index) {
+
+      const realIndex =
+        customers.indexOf(
+          customer
+        );
 
 
-  // ==========================================================
-  // SEARCH
-  // ==========================================================
+      const tr =
+        document.createElement(
+          "tr"
+        );
+
+
+      const phoneHtml =
+        customer.phone
+          ? escapeHtml(
+              customer.phone
+            )
+          : '<span style="color:#dc2626">Chưa có</span>';
+
+
+      tr.innerHTML = `
+
+        <td>
+          ${index + 1}
+        </td>
+
+        <td>
+          <strong>
+            ${escapeHtml(customer.name)}
+          </strong>
+        </td>
+
+        <td>
+          ${phoneHtml}
+        </td>
+
+        <td>
+          <strong>
+            ${formatMoney(customer.amount)} đ
+          </strong>
+        </td>
+
+        <td>
+          ${escapeHtml(
+            String(customer.days || "0")
+          )} ngày
+        </td>
+
+        <td>
+          ${escapeHtml(
+            customer.debtInfo || ""
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            customer.supportPhone || ""
+          )}
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-view"
+            onclick="viewMessage(${realIndex})"
+          >
+            👁 XEM
+          </button>
+
+          <button
+            class="btn btn-send"
+            onclick="viewMessage(${realIndex})"
+          >
+            📱 GỬI
+          </button>
+
+          <button
+            class="btn btn-delete"
+            onclick="deleteCustomer(${realIndex})"
+          >
+            XÓA
+          </button>
+
+        </td>
+
+      `;
+
+
+      tbody.appendChild(
+        tr
+      );
+
+    }
+  );
+
+
+  updateStats();
+
+}
+
+
+// ========================================================
+// SEARCH
+// ========================================================
+
+document
+  .getElementById("searchInput")
+  .addEventListener(
+    "input",
+    renderCustomers
+  );
+
+
+// ========================================================
+// UPDATE STATS
+// ========================================================
+
+function updateStats() {
+
+  const total =
+    customers.length;
+
+
+  const phones =
+    customers.filter(
+      function(c) {
+
+        return !!c.phone;
+
+      }
+    ).length;
+
+
+  const missing =
+    total - phones;
+
 
   document
-    .getElementById("searchInput")
-    .addEventListener(
-      "input",
-      renderCustomers
-    );
+    .getElementById("totalCustomers")
+    .textContent =
+    total;
 
 
-  // ==========================================================
-  // UPDATE STATS
-  // ==========================================================
-
-  function updateStats() {
-
-    const total =
-      customers.length;
+  document
+    .getElementById("totalPhones")
+    .textContent =
+    phones;
 
 
-    const phones =
-      customers.filter(
-        c => c.phone
-      ).length;
+  document
+    .getElementById("totalMissingPhones")
+    .textContent =
+    missing;
+
+}
 
 
-    const missing =
-      total - phones;
+// ========================================================
+// DELETE
+// ========================================================
+
+function deleteCustomer(index) {
+
+  const customer =
+    customers[index];
 
 
-    document
-      .getElementById("totalCustomers")
-      .textContent =
-      total;
+  if (!customer) {
 
-
-    document
-      .getElementById("totalPhones")
-      .textContent =
-      phones;
-
-
-    document
-      .getElementById("totalMissingPhones")
-      .textContent =
-      missing;
-
+    return;
   }
 
 
-  // ==========================================================
-  // DELETE
-  // ==========================================================
-
-  function deleteCustomer(index) {
-
-    const customer =
-      customers[index];
-
-
-    if (!customer) {
-
-      return;
-    }
-
-
-    const ok =
-      confirm(
-        `Bạn có chắc muốn xóa ${customer.name}?`
-      );
-
-
-    if (!ok) {
-
-      return;
-    }
-
-
-    customers.splice(
-      index,
-      1
+  const ok =
+    confirm(
+      `Bạn có chắc muốn xóa ${customer.name}?`
     );
 
 
-    renderCustomers();
+  if (!ok) {
 
+    return;
   }
 
 
-  // ==========================================================
-  // CREATE MESSAGE
-  // ==========================================================
-
-  function createMessage(customer) {
-
-    const name =
-      customer.name || "Anh/Chị";
+  customers.splice(
+    index,
+    1
+  );
 
 
-    const amount =
-      formatMoney(
-        customer.amount
-      );
+  renderCustomers();
 
 
-    const days =
-      customer.days || "0";
+  showToast(
+    "Đã xóa khách hàng."
+  );
+
+}
 
 
-    const debtInfo =
-      customer.debtInfo ||
-      "khoản nợ tại VPBank";
+// ========================================================
+// CREATE MESSAGE
+// ========================================================
+
+function createMessage(customer) {
+
+  const name =
+    customer.name ||
+    "Anh/Chị";
 
 
-    const supportPhone =
-      customer.supportPhone ||
-      "";
+  const amount =
+    formatMoney(
+      customer.amount
+    );
 
 
-    let message =
+  const days =
+    customer.days ||
+    "0";
 
-`Kính gửi Anh/Chị ${name},
+
+  const debtInfo =
+    customer.debtInfo ||
+    "khoản nợ tại VPBank";
+
+
+  const supportPhone =
+    customer.supportPhone ||
+    "người hỗ trợ";
+
+
+  return `Kính gửi Anh/Chị ${name},
 
 Khoản nợ tại VPBank của Anh/Chị hiện đang quá hạn ${days} ngày, với số tiền ${amount} đồng.
 
 Thông tin khoản nợ: ${debtInfo}.
 
-Anh/Chị vui lòng liên hệ ${supportPhone || "người hỗ trợ"} để được hỗ trợ xử lý khoản nợ.
+Anh/Chị vui lòng liên hệ ${supportPhone} để được hỗ trợ xử lý khoản nợ.
 
 Trân trọng.`;
 
+}
 
-    return message;
 
+// ========================================================
+// VIEW MESSAGE
+// ========================================================
+
+function viewMessage(index) {
+
+  const customer =
+    customers[index];
+
+
+  if (!customer) {
+
+    return;
   }
 
 
-  // ==========================================================
-  // VIEW MESSAGE
-  // ==========================================================
+  currentCustomer =
+    customer;
 
-  function viewMessage(index) {
-
-    const customer =
-      customers[index];
-
-
-    if (!customer) {
-
-      return;
-    }
-
-
-    currentCustomer =
-      customer;
-
-
-    document
-      .getElementById("messagePreview")
-      .textContent =
-      createMessage(customer);
-
-
-    document
-      .getElementById("messageModal")
-      .classList
-      .add("show");
-
-  }
-
-
-  // ==========================================================
-  // CLOSE MODAL
-  // ==========================================================
-
-  function closeModal() {
-
-    document
-      .getElementById("messageModal")
-      .classList
-      .remove("show");
-
-    currentCustomer = null;
-
-  }
-
-
-  // ==========================================================
-  // SEND SMS
-  // ==========================================================
-
-  function sendCurrentSMS() {
-
-    if (!currentCustomer) {
-
-      return;
-    }
-
-
-    const phone =
-      cleanPhone(
-        currentCustomer.phone
-      );
-
-
-    if (!phone) {
-
-      alert(
-        "Khách hàng chưa có số điện thoại."
-      );
-
-      return;
-    }
-
-
-    const message =
-      createMessage(
-        currentCustomer
-      );
-
-
-    /*
-      Mở ứng dụng SMS của thiết bị.
-
-      Trình duyệt không được phép tự ý
-      gửi SMS mà không có thao tác của người dùng.
-    */
-
-    const smsUrl =
-      "sms:" +
-      encodeURIComponent(phone) +
-      "?body=" +
-      encodeURIComponent(message);
-
-
-    window.location.href =
-      smsUrl;
-
-  }
-
-
-  // ==========================================================
-  // SCROLL FORM
-  // ==========================================================
-
-  function scrollToForm() {
-
-    document
-      .getElementById("manualForm")
-      .scrollIntoView({
-        behavior: "smooth"
-      });
-
-  }
-
-
-  // ==========================================================
-  // ESCAPE HTML
-  // ==========================================================
-
-  function escapeHtml(value) {
-
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-  }
-
-
-  // ==========================================================
-  // MODAL CLICK OUTSIDE
-  // ==========================================================
 
   document
-    .getElementById("messageModal")
-    .addEventListener(
-      "click",
-      function(event) {
-
-        if (
-          event.target === this
-        ) {
-
-          closeModal();
-
-        }
-
-      }
+    .getElementById("messagePreview")
+    .textContent =
+    createMessage(
+      customer
     );
 
 
-  // ==========================================================
-  // INITIAL
-  // ==========================================================
+  document
+    .getElementById("messageModal")
+    .classList
+    .add("show");
 
-  renderCustomers();
+}
+
+
+// ========================================================
+// CLOSE MODAL
+// ========================================================
+
+function closeModal() {
+
+  document
+    .getElementById("messageModal")
+    .classList
+    .remove("show");
+
+
+  currentCustomer =
+    null;
+
+}
+
+
+// ========================================================
+// COPY MESSAGE
+// ========================================================
+
+async function copyCurrentMessage() {
+
+  if (!currentCustomer) {
+
+    return;
+  }
+
+
+  const message =
+    createMessage(
+      currentCustomer
+    );
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      message
+    );
+
+
+    showToast(
+      "Đã sao chép nội dung tin nhắn."
+    );
+
+
+  } catch (error) {
+
+    /*
+      Fallback cho một số trình duyệt
+    */
+
+    const textarea =
+      document.createElement(
+        "textarea"
+      );
+
+
+    textarea.value =
+      message;
+
+
+    document.body.appendChild(
+      textarea
+    );
+
+
+    textarea.select();
+
+
+    document.execCommand(
+      "copy"
+    );
+
+
+    textarea.remove();
+
+
+    showToast(
+      "Đã sao chép nội dung tin nhắn."
+    );
+
+  }
+
+}
+
+
+// ========================================================
+// SEND SMS
+// ========================================================
+
+function sendCurrentSMS() {
+
+  if (!currentCustomer) {
+
+    return;
+  }
+
+
+  const phone =
+    cleanPhone(
+      currentCustomer.phone
+    );
+
+
+  if (!phone) {
+
+    alert(
+      "Khách hàng chưa có số điện thoại."
+    );
+
+    return;
+  }
+
+
+  const message =
+    createMessage(
+      currentCustomer
+    );
+
+
+  /*
+    Mở trình nhắn tin của thiết bị.
+
+    Người dùng vẫn phải xác nhận gửi.
+  */
+
+  const smsUrl =
+    "sms:" +
+    encodeURIComponent(
+      phone
+    ) +
+    "?body=" +
+    encodeURIComponent(
+      message
+    );
+
+
+  window.location.href =
+    smsUrl;
+
+}
+
+
+// ========================================================
+// SCROLL FORM
+// ========================================================
+
+function scrollToForm() {
+
+  document
+    .getElementById("manualForm")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+
+// ========================================================
+// ESCAPE HTML
+// ========================================================
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+// ========================================================
+// CLICK OUTSIDE MODAL
+// ========================================================
+
+document
+  .getElementById("messageModal")
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target === this
+      ) {
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+
+// ========================================================
+// ESC KEY
+// ========================================================
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      closeModal();
+
+    }
+
+  }
+);
+
+
+// ========================================================
+// INITIAL
+// ========================================================
+
+renderCustomers();
 
 </script>
 
+
 </body>
+
 </html>
