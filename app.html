@@ -210,6 +210,21 @@
       background: #15803d;
     }
 
+    .export-btn {
+      background: #0284c7;
+      color: white;
+      border: 0;
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .export-btn:hover {
+      background: #0369a1;
+    }
+
     /* =========================
        STATS
     ========================= */
@@ -273,7 +288,8 @@
       font-weight: bold;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .search-box {
@@ -621,6 +637,7 @@
       <div class="table-title">
         <span>👥 Danh sách khách hàng</span>
         <button class="send-all-btn" id="sendAllBtn">📱 GỬI TẤT CẢ (LẦN LƯỢT)</button>
+        <button class="export-btn" id="exportShortcutsBtn">📤 XUẤT CHO PHÍM TẮT</button>
       </div>
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="🔎 Tìm tên hoặc SĐT...">
@@ -708,6 +725,7 @@ const copyBtn = document.getElementById("copyBtn");
 const sendSmsBtn = document.getElementById("sendSmsBtn");
 const markSentBtn = document.getElementById("markSentBtn");
 const sendAllBtn = document.getElementById("sendAllBtn");
+const exportShortcutsBtn = document.getElementById("exportShortcutsBtn");
 
 function showLoading(text = "Đang xử lý...") {
   document.getElementById("loadingText").textContent = text;
@@ -775,7 +793,7 @@ const EXCEL_COLUMNS = {
   supportPhone: ["SĐT người hỗ trợ", "SDT nguoi ho tro", "SĐT hỗ trợ", "SDT ho tro"]
 };
 
-// Kiếm tra đăng nhập
+// Kiểm tra đăng nhập
 async function checkAuth() {
   const { data, error } = await supabaseClient.auth.getSession();
   if (error || !data.session) {
@@ -792,7 +810,7 @@ logoutBtn.addEventListener("click", async function () {
   window.location.href = "index.html";
 });
 
-// LẤY DỮ LIỆU TỪ SUPABASE (Tự chạy khi F5 làm mới trang)
+// LẤY DỮ LIỆU TỪ SUPABASE
 async function loadCustomers() {
   showLoading("Đang tải dữ liệu từ Supabase...");
   try {
@@ -936,6 +954,35 @@ sendAllBtn.addEventListener("click", function() {
   processNextBatch();
 });
 
+/* XUẤT FILE CHO PHÍM TẮT IPHONE */
+exportShortcutsBtn.addEventListener("click", function() {
+  const unsentList = customers.filter(item => !item.sent && String(item.phone || "").trim());
+
+  if (!unsentList.length) {
+    showToast("Không có khách hàng nào CHƯA GỬI có SĐT hợp lệ.", "error");
+    return;
+  }
+
+  const dataForShortcuts = unsentList.map(item => ({
+    id: item.id,
+    phone: String(item.phone).trim(),
+    message: createMessage(item)
+  }));
+
+  const jsonStr = JSON.stringify(dataForShortcuts, null, 2);
+  const blob = new Blob([jsonStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `sms_list_${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast(`Đã xuất ${unsentList.length} khách hàng ra file JSON!`, "success");
+});
+
 function processNextBatch() {
   if (batchIndex >= batchQueue.length) {
     showToast("Đã hoàn tất duyệt toàn bộ danh sách chưa gửi!", "success");
@@ -995,7 +1042,7 @@ markSentBtn.addEventListener("click", async function() {
     if (error) throw error;
 
     showToast("Đã ghi nhận trạng thái ĐÃ GỬI lên CSDL!", "success");
-    await loadCustomers(); // Tải lại dữ liệu mới nhất từ Supabase
+    await loadCustomers();
 
     if (isBatchMode) {
       batchIndex++;
