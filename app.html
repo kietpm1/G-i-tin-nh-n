@@ -1125,31 +1125,136 @@
 
   function formatMoney(value) {
 
-    if (
-      value === null ||
-      value === undefined ||
-      value === ""
-    ) {
-
-      return "0";
-    }
-
-
-    let number =
-      String(value)
-        .replace(/[^\d.-]/g, "");
-
-
-    if (!number) {
-
-      return "0";
-    }
-
-
-    return Number(number)
-      .toLocaleString("vi-VN");
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return "0";
   }
 
+  // Nếu Excel trả về kiểu number
+  if (typeof value === "number") {
+
+    if (!Number.isFinite(value)) {
+      return "0";
+    }
+
+    return Math.round(value).toLocaleString("vi-VN");
+  }
+
+  let text = String(value).trim();
+
+  if (!text) {
+    return "0";
+  }
+
+  // Loại bỏ chữ "đ", "VND", khoảng trắng...
+  text = text
+    .replace(/đ/gi, "")
+    .replace(/vnd/gi, "")
+    .replace(/\s/g, "");
+
+  /*
+    Xử lý các dạng:
+
+    25000000
+    25,000,000
+    25.000.000
+    25 000 000
+  */
+
+  let number;
+
+  // Có cả dấu . và ,
+  if (
+    text.includes(".") &&
+    text.includes(",")
+  ) {
+
+    // Ví dụ 25.000.000,50
+    const lastComma =
+      text.lastIndexOf(",");
+
+    const lastDot =
+      text.lastIndexOf(".");
+
+    if (lastComma > lastDot) {
+
+      text =
+        text
+          .replace(/\./g, "")
+          .replace(",", ".");
+
+    } else {
+
+      text =
+        text
+          .replace(/,/g, "");
+    }
+
+  }
+
+  // Chỉ có dấu phẩy
+  else if (text.includes(",")) {
+
+    // Nếu là 25,000,000 -> bỏ dấu phẩy
+    const parts =
+      text.split(",");
+
+    if (
+      parts.length > 2 ||
+      (parts.length === 2 &&
+       parts[1].length === 3)
+    ) {
+
+      text =
+        text.replace(/,/g, "");
+
+    } else {
+
+      text =
+        text.replace(",", ".");
+    }
+
+  }
+
+  // Chỉ có dấu chấm
+  else if (text.includes(".")) {
+
+    const parts =
+      text.split(".");
+
+    // 25.000.000
+    if (
+      parts.length > 2 ||
+      (parts.length === 2 &&
+       parts[1].length === 3)
+    ) {
+
+      text =
+        text.replace(/\./g, "");
+
+    }
+  }
+
+  // Chỉ lấy số
+  text =
+    text.replace(/[^\d.-]/g, "");
+
+  number =
+    Number(text);
+
+  if (
+    !Number.isFinite(number)
+  ) {
+
+    return "0";
+  }
+
+  return Math.round(number)
+    .toLocaleString("vi-VN");
+}
 
   // ==========================================================
   // CLEAN PHONE
