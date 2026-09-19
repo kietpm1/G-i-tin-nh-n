@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>Hệ Thống Nhắc Nợ</title>
 
   <!-- Supabase -->
@@ -1106,13 +1105,6 @@ function parseMoneyNumber(value) {
     .replace(/\s/g, "");
 
 
-  /*
-    Trường hợp Excel có dạng:
-    100.000.000
-    100,000,000
-    100000000
-  */
-
   const digits =
     text.replace(/[^\d]/g, "");
 
@@ -1145,7 +1137,6 @@ function formatMoney(value) {
 
 /* ============================================================
    AMOUNT INPUT
-   Không format khi đang gõ
 ============================================================ */
 
 amountInput.addEventListener(
@@ -1894,51 +1885,26 @@ sendSmsBtn.addEventListener(
       return;
     }
 
-
-    const phone =
-      String(
-        currentCustomer.phone || ""
-      ).trim();
-
+    const phone = String(currentCustomer.phone || "").trim();
 
     if (!phone) {
-
-      showToast(
-        "Khách hàng chưa có SĐT.",
-        "error"
-      );
-
+      showToast("Khách hàng chưa có SĐT.", "error");
       return;
     }
 
+    const message = createMessage(currentCustomer);
 
-    const message =
-      createMessage(
-        currentCustomer
-      );
+    // Hỗ trợ định dạng liên kết SMS linh hoạt cho cả iOS và Android
+    const isiOS = navigator.userAgent.match(/(iPhone|iPod|iPad)/i);
+    const smsUrl = "sms:" + encodeURIComponent(phone) + (isiOS ? "&body=" : "?body=") + encodeURIComponent(message);
 
-
-    const smsUrl =
-      "sms:" +
-      encodeURIComponent(phone) +
-      "?body=" +
-      encodeURIComponent(message);
-
-
-    /*
-      Trình duyệt không thể tự động gửi SMS.
-      Nó chỉ mở ứng dụng SMS.
-    */
-
-    window.location.href =
-      smsUrl;
-
+    window.location.href = smsUrl;
   }
 );
 
 
 /* ============================================================
-   MARK SENT
+   MARK AS SENT
 ============================================================ */
 
 markSentBtn.addEventListener(
@@ -1949,85 +1915,32 @@ markSentBtn.addEventListener(
       return;
     }
 
-
-    const confirmed =
-      confirm(
-        "Bạn xác nhận khách hàng này đã được gửi tin?"
-      );
-
-
-    if (!confirmed) {
-      return;
-    }
-
-
-    showLoading(
-      "Đang cập nhật trạng thái..."
-    );
-
+    showLoading("Đang cập nhật trạng thái...");
 
     try {
 
-      const now =
-        new Date().toISOString();
-
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("customers")
-          .update({
-            sent: true,
-            sent_at: now
-          })
-          .eq(
-            "id",
-            currentCustomer.id
-          );
-
+      const { error } = await supabaseClient
+        .from("customers")
+        .update({ sent: true })
+        .eq("id", currentCustomer.id);
 
       if (error) {
         throw error;
       }
 
+      currentCustomer.sent = true;
 
-      const item =
-        customers.find(
-          c =>
-            c.id ===
-            currentCustomer.id
-        );
-
-
-      if (item) {
-
-        item.sent = true;
-        item.sent_at = now;
-
-      }
-
-
-      applySearch();
+      showToast("Đã đánh dấu là đã gửi!", "success");
 
       closeModal();
 
-
-      showToast(
-        "Đã đánh dấu khách hàng đã gửi.",
-        "success"
-      );
-
+      await loadCustomers();
 
     } catch (error) {
 
       console.error(error);
 
-      showToast(
-        "Không cập nhật được: " +
-        error.message,
-        "error"
-      );
+      showToast("Không thể cập nhật: " + error.message, "error");
 
     } finally {
 
@@ -2043,246 +1956,102 @@ markSentBtn.addEventListener(
    DELETE CUSTOMER
 ============================================================ */
 
-window.deleteCustomer =
-  async function(id) {
+window.deleteCustomer = async function(id) {
 
-    const customer =
-      customers.find(
-        item =>
-          String(item.id) === String(id)
-      );
+  if (!confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) {
+    return;
+  }
 
+  showLoading("Đang xóa khách hàng...");
 
-    if (!customer) {
-      return;
+  try {
+
+    const { error } = await supabaseClient
+      .from("customers")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      throw error;
     }
 
+    showToast("Đã xóa khách hàng thành công.", "success");
 
-    const confirmed =
-      confirm(
-        `Bạn có chắc muốn xóa khách hàng "${customer.name}"?`
-      );
+    await loadCustomers();
 
+  } catch (error) {
 
-    if (!confirmed) {
-      return;
-    }
+    console.error(error);
 
+    showToast("Xóa thất bại: " + error.message, "error");
 
-    showLoading(
-      "Đang xóa khách hàng..."
-    );
+  } finally {
 
+    hideLoading();
 
-    try {
+  }
 
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("customers")
-          .delete()
-          .eq(
-            "id",
-            customer.id
-          );
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      customers =
-        customers.filter(
-          item =>
-            item.id !== customer.id
-        );
-
-
-      applySearch();
-
-
-      showToast(
-        "Đã xóa khách hàng.",
-        "success"
-      );
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      showToast(
-        "Xóa thất bại: " +
-        error.message,
-        "error"
-      );
-
-    } finally {
-
-      hideLoading();
-
-    }
-
-  };
+};
 
 
 /* ============================================================
-   MANUAL INSERT
+   SAVE CUSTOMER FORM (MANUAL INPUT)
 ============================================================ */
 
 customerForm.addEventListener(
   "submit",
-  async function(event) {
+  async function(e) {
 
-    event.preventDefault();
+    e.preventDefault();
 
-
-    if (!currentUser) {
-
-      showToast(
-        "Phiên đăng nhập không hợp lệ.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    const name =
-      document
-        .getElementById("name")
-        .value
-        .trim();
-
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const rawAmount = document.getElementById("amount").value;
+    const overdueDays = document.getElementById("overdueDays").value;
+    const debtInfo = document.getElementById("debtInfo").value.trim();
+    const supportPhone = document.getElementById("supportPhone").value.trim();
 
     if (!name) {
-
-      showToast(
-        "Vui lòng nhập họ và tên.",
-        "error"
-      );
-
+      showToast("Vui lòng nhập họ và tên khách hàng.", "error");
       return;
     }
 
+    const payload = {
+      user_id: currentUser.id,
+      name: name,
+      phone: phone,
+      amount: parseMoneyNumber(rawAmount),
+      overdue_days: Number(overdueDays || 0),
+      debt_info: debtInfo,
+      support_phone: supportPhone,
+      sent: false
+    };
 
-    const phone =
-      document
-        .getElementById("phone")
-        .value
-        .trim();
-
-
-    const amount =
-      parseMoneyNumber(
-        document
-          .getElementById("amount")
-          .value
-      );
-
-
-    const overdueDays =
-      parseInt(
-        document
-          .getElementById("overdueDays")
-          .value,
-        10
-      ) || 0;
-
-
-    const debtInfo =
-      document
-        .getElementById("debtInfo")
-        .value
-        .trim();
-
-
-    const supportPhone =
-      document
-        .getElementById("supportPhone")
-        .value
-        .trim();
-
-
-    saveBtn.disabled = true;
-
-
-    showLoading(
-      "Đang lưu khách hàng..."
-    );
-
+    showLoading("Đang lưu khách hàng...");
 
     try {
 
-      const record = {
-
-        user_id:
-          currentUser.id,
-
-        name:
-          name,
-
-        phone:
-          phone || null,
-
-        amount:
-          amount,
-
-        overdue_days:
-          overdueDays,
-
-        debt_info:
-          debtInfo || null,
-
-        support_phone:
-          supportPhone || null,
-
-        sent:
-          false
-
-      };
-
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("customers")
-          .insert(record);
-
+      const { error } = await supabaseClient
+        .from("customers")
+        .insert([payload]);
 
       if (error) {
         throw error;
       }
 
+      showToast("Thêm khách hàng thành công!", "success");
 
       customerForm.reset();
 
-
-      showToast(
-        "Đã lưu khách hàng.",
-        "success"
-      );
-
-
       await loadCustomers();
-
 
     } catch (error) {
 
       console.error(error);
 
-      showToast(
-        "Lưu thất bại: " +
-        error.message,
-        "error"
-      );
+      showToast("Lưu thất bại: " + error.message, "error");
 
     } finally {
-
-      saveBtn.disabled = false;
 
       hideLoading();
 
@@ -2293,334 +2062,125 @@ customerForm.addEventListener(
 
 
 /* ============================================================
-   EXCEL IMPORT
+   IMPORT FROM EXCEL
 ============================================================ */
 
 excelFile.addEventListener(
   "change",
-  async function() {
+  function(e) {
 
-    const file =
-      this.files[0];
-
+    const file = e.target.files[0];
 
     if (!file) {
       return;
     }
 
+    const reader = new FileReader();
 
-    if (!currentUser) {
+    showLoading("Đang đọc và xử lý file Excel...");
 
-      showToast(
-        "Chưa xác định tài khoản đăng nhập.",
-        "error"
-      );
+    reader.onload = async function(event) {
 
-      return;
-    }
+      try {
 
+        const data = new Uint8Array(event.target.result);
 
-    showLoading(
-      "Đang đọc file Excel..."
-    );
+        const workbook = XLSX.read(data, { type: "array" });
 
+        const firstSheetName = workbook.SheetNames[0];
 
-    try {
+        const worksheet = workbook.Sheets[firstSheetName];
 
-      const buffer =
-        await file.arrayBuffer();
+        const jsonRows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
 
-
-      const workbook =
-        XLSX.read(
-          buffer,
-          {
-            type: "array"
-          }
-        );
-
-
-      const sheet =
-        workbook.Sheets[
-          workbook.SheetNames[0]
-        ];
-
-
-      const rows =
-        XLSX.utils.sheet_to_json(
-          sheet,
-          {
-            defval: "",
-            raw: true
-          }
-        );
-
-
-      if (!rows.length) {
-
-        showToast(
-          "File Excel không có dữ liệu.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      const records = [];
-
-
-      let skipped = 0;
-
-
-      rows.forEach(row => {
-
-        const name =
-          String(
-            getExcelValue(
-              row,
-              EXCEL_COLUMNS.name
-            ) || ""
-          ).trim();
-
-
-        /*
-          Không có tên thì bỏ qua dòng.
-        */
-
-        if (!name) {
-
-          skipped++;
-
+        if (!jsonRows.length) {
+          showToast("File Excel không có dữ liệu.", "error");
+          hideLoading();
           return;
-
         }
 
+        const newCustomers = jsonRows.map(row => {
 
-        const phone =
-          String(
-            getExcelValue(
-              row,
-              EXCEL_COLUMNS.phone
-            ) || ""
-          ).trim();
+          const name = getExcelValue(row, EXCEL_COLUMNS.name);
 
+          const phone = getExcelValue(row, EXCEL_COLUMNS.phone);
 
-        const amount =
-          parseMoneyNumber(
-            getExcelValue(
-              row,
-              EXCEL_COLUMNS.amount
-            )
-          );
+          const amountVal = getExcelValue(row, EXCEL_COLUMNS.amount);
 
+          const overdueVal = getExcelValue(row, EXCEL_COLUMNS.overdueDays);
 
-        const overdueRaw =
-          getExcelValue(
-            row,
-            EXCEL_COLUMNS.overdueDays
-          );
+          const debtInfo = getExcelValue(row, EXCEL_COLUMNS.debtInfo);
 
+          const supportPhone = getExcelValue(row, EXCEL_COLUMNS.supportPhone);
 
-        const overdueDays =
-          parseInt(
-            String(
-              overdueRaw || "0"
-            ).replace(
-              /[^\d-]/g,
-              ""
-            ),
-            10
-          ) || 0;
+          return {
+            user_id: currentUser.id,
+            name: String(name || "").trim(),
+            phone: String(phone || "").trim(),
+            amount: parseMoneyNumber(amountVal),
+            overdue_days: Number(parseMoneyNumber(overdueVal) || 0),
+            debt_info: String(debtInfo || "").trim(),
+            support_phone: String(supportPhone || "").trim(),
+            sent: false
+          };
 
+        }).filter(item => item.name !== "");
 
-        const debtInfo =
-          String(
-            getExcelValue(
-              row,
-              EXCEL_COLUMNS.debtInfo
-            ) || ""
-          ).trim();
+        if (!newCustomers.length) {
+          showToast("Không tìm thấy hàng hợp lệ có 'Họ và tên' trong file.", "error");
+          hideLoading();
+          return;
+        }
 
-
-        const supportPhone =
-          String(
-            getExcelValue(
-              row,
-              EXCEL_COLUMNS.supportPhone
-            ) || ""
-          ).trim();
-
-
-        records.push({
-
-          user_id:
-            currentUser.id,
-
-          name:
-            name,
-
-          phone:
-            phone || null,
-
-          amount:
-            amount,
-
-          overdue_days:
-            overdueDays,
-
-          debt_info:
-            debtInfo || null,
-
-          support_phone:
-            supportPhone || null,
-
-          sent:
-            false
-
-        });
-
-      });
-
-
-      if (!records.length) {
-
-        showToast(
-          "Không tìm thấy dòng dữ liệu hợp lệ.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      /*
-        Chia thành từng đợt 500 dòng.
-        Tránh gửi request quá lớn.
-      */
-
-      const CHUNK_SIZE = 500;
-
-
-      let inserted = 0;
-
-
-      for (
-        let i = 0;
-        i < records.length;
-        i += CHUNK_SIZE
-      ) {
-
-        const chunk =
-          records.slice(
-            i,
-            i + CHUNK_SIZE
-          );
-
-
-        document.getElementById(
-          "loadingText"
-        ).textContent =
-          `Đang lưu Excel: ${Math.min(
-            i + chunk.length,
-            records.length
-          )}/${records.length}`;
-
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("customers")
-            .insert(chunk);
-
+        const { error } = await supabaseClient
+          .from("customers")
+          .insert(newCustomers);
 
         if (error) {
           throw error;
         }
 
+        showToast(`Đã nhập thành công ${newCustomers.length} khách hàng!`, "success");
 
-        inserted +=
-          chunk.length;
+        excelFile.value = "";
+
+        await loadCustomers();
+
+      } catch (error) {
+
+        console.error(error);
+
+        showToast("Lỗi nhập Excel: " + error.message, "error");
+
+      } finally {
+
+        hideLoading();
 
       }
 
+    };
 
-      excelFile.value = "";
-
-
-      await loadCustomers();
-
-
-      showToast(
-        `Đã nhập ${inserted} khách hàng` +
-        (
-          skipped
-            ? `, bỏ qua ${skipped} dòng không có tên.`
-            : "."
-        ),
-        "success"
-      );
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      showToast(
-        "Nhập Excel thất bại: " +
-        error.message,
-        "error"
-      );
-
-    } finally {
-
-      hideLoading();
-
-    }
+    reader.readAsArrayBuffer(file);
 
   }
 );
 
 
 /* ============================================================
-   AUTH STATE
+   INIT
 ============================================================ */
 
-supabaseClient.auth.onAuthStateChange(
-  function(event, session) {
+document.addEventListener("DOMContentLoaded", async function() {
 
-    if (
-      event === "SIGNED_OUT"
-    ) {
+  const authenticated = await checkAuth();
 
-      window.location.href =
-        "index.html";
+  if (authenticated) {
 
-    }
+    await loadCustomers();
 
   }
-);
 
-
-/* ============================================================
-   START
-============================================================ */
-
-(async function init() {
-
-  const authenticated =
-    await checkAuth();
-
-
-  if (!authenticated) {
-    return;
-  }
-
-
-  await loadCustomers();
-
-})();
+});
 
 </script>
 
