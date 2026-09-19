@@ -1323,11 +1323,14 @@
       );
 
 
-    const amount =
-      document
-        .getElementById("amountInput")
-        .value
-        .trim();
+   const amount =
+  document
+    .getElementById("amountInput")
+    .value
+    .trim();
+
+const amountNumber =
+  parseMoneyNumber(amount);
 
 
     const days =
@@ -1368,21 +1371,21 @@
     }
 
 
-    customers.push({
+   customers.push({
 
-      name: name,
+  name: name,
 
-      phone: phone,
+  phone: phone,
 
-      amount: amount,
+  amount: amountNumber,
 
-      days: days,
+  days: days,
 
-      debtInfo: debtInfo,
+  debtInfo: debtInfo,
 
-      supportPhone: supportPhone
+  supportPhone: supportPhone
 
-    });
+});
 
 
     clearForm();
