@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hệ Thống Nhắc Nợ</title>
 
-  <!-- Supabase -->
+  <!-- Supabase JS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- SheetJS đọc Excel -->
@@ -159,8 +159,7 @@
     }
 
     input,
-    textarea,
-    select {
+    textarea {
       width: 100%;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
@@ -539,7 +538,7 @@
   <div class="header-inner">
     <div>
       <div class="title">📋 HỆ THỐNG NHẮC NỢ</div>
-      <div class="subtitle">Quản lý khách hàng và hỗ trợ gửi tin nhắn</div>
+      <div class="subtitle">Quản lý khách hàng và lưu trữ dữ liệu tập trung</div>
     </div>
     <div class="user-area">
       <div class="user-email" id="userEmail">Đang kiểm tra tài khoản...</div>
@@ -554,7 +553,7 @@
   <section class="action-grid">
     <div class="card">
       <h2>📥 Nhập danh sách từ Excel</h2>
-      <div class="card-description">Chọn file Excel để lưu danh sách khách hàng vào hệ thống.</div>
+      <div class="card-description">Chọn file Excel để lưu danh sách khách hàng trực tiếp vào Supabase.</div>
       <div class="file-box">
         <input type="file" id="excelFile" accept=".xlsx,.xls">
         <div style="margin-top:10px;color:#64748b;font-size:12px;">Hệ thống tự nhận diện tên các cột phổ biến.</div>
@@ -660,7 +659,7 @@
     <div class="modal-body">
       <div class="message-preview" id="messagePreview"></div>
       <div style="margin-top:10px;font-size:12px;color:#64748b;">
-        Lưu ý: Bạn cần bấm "MỞ SMS" để mở ứng dụng nhắn tin và gửi. Bấm "ĐÁNH DẤU ĐÃ GỬI" để hoàn tất người này.
+        Lưu ý: Bấm "MỞ SMS" để gửi tin nhắn. Bấm "ĐÁNH DẤU ĐÃ GỬI" để cập nhật trạng thái lên Supabase.
       </div>
       <div class="modal-actions">
         <button class="secondary-btn" id="closeModalBtn2">ĐÓNG</button>
@@ -776,6 +775,7 @@ const EXCEL_COLUMNS = {
   supportPhone: ["SĐT người hỗ trợ", "SDT nguoi ho tro", "SĐT hỗ trợ", "SDT ho tro"]
 };
 
+// Kiếm tra đăng nhập
 async function checkAuth() {
   const { data, error } = await supabaseClient.auth.getSession();
   if (error || !data.session) {
@@ -792,12 +792,14 @@ logoutBtn.addEventListener("click", async function () {
   window.location.href = "index.html";
 });
 
+// LẤY DỮ LIỆU TỪ SUPABASE (Tự chạy khi F5 làm mới trang)
 async function loadCustomers() {
-  showLoading("Đang tải danh sách khách hàng...");
+  showLoading("Đang tải dữ liệu từ Supabase...");
   try {
     const { data, error } = await supabaseClient
       .from("customers")
       .select("*")
+      .eq("user_id", currentUser.id)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
@@ -805,7 +807,7 @@ async function loadCustomers() {
     applySearch();
   } catch (error) {
     console.error(error);
-    showToast("Không tải được dữ liệu: " + error.message, "error");
+    showToast("Lỗi tải dữ liệu: " + error.message, "error");
   } finally {
     hideLoading();
   }
@@ -843,7 +845,7 @@ function updateStats() {
 function renderTable() {
   customerTableBody.innerHTML = "";
   if (!filteredCustomers.length) {
-    customerTableBody.innerHTML = `<tr><td colspan="9" class="empty">Chưa có khách hàng.</td></tr>`;
+    customerTableBody.innerHTML = `<tr><td colspan="9" class="empty">Chưa có dữ liệu khách hàng.</td></tr>`;
     return;
   }
 
@@ -920,12 +922,8 @@ window.openSendCustomer = function(id) {
   messageModal.classList.add("show");
 };
 
-/* ============================================================
-   XỬ LÝ GỬI TẤT CẢ (LẦN LƯỢT)
-============================================================ */
-
+/* GỬI TẤT CẢ (LẦN LƯỢT) */
 sendAllBtn.addEventListener("click", function() {
-  // Lọc ra các khách hàng chưa gửi và có SĐT
   batchQueue = customers.filter(item => !item.sent && String(item.phone || "").trim());
 
   if (!batchQueue.length) {
@@ -940,7 +938,7 @@ sendAllBtn.addEventListener("click", function() {
 
 function processNextBatch() {
   if (batchIndex >= batchQueue.length) {
-    showToast("Đã duyệt xong tất cả khách hàng chưa gửi!", "success");
+    showToast("Đã hoàn tất duyệt toàn bộ danh sách chưa gửi!", "success");
     closeModal();
     isBatchMode = false;
     return;
@@ -983,9 +981,10 @@ sendSmsBtn.addEventListener("click", function() {
   window.location.href = smsUrl;
 });
 
+// CẬP NHẬT TRẠNG THÁI "ĐÃ GỬI" VÀO SUPABASE
 markSentBtn.addEventListener("click", async function() {
   if (!currentCustomer) return;
-  showLoading("Đang cập nhật trạng thái...");
+  showLoading("Đang cập nhật Supabase...");
 
   try {
     const { error } = await supabaseClient
@@ -995,9 +994,8 @@ markSentBtn.addEventListener("click", async function() {
 
     if (error) throw error;
 
-    currentCustomer.sent = true;
-    showToast("Đã đánh dấu là đã gửi!", "success");
-    await loadCustomers();
+    showToast("Đã ghi nhận trạng thái ĐÃ GỬI lên CSDL!", "success");
+    await loadCustomers(); // Tải lại dữ liệu mới nhất từ Supabase
 
     if (isBatchMode) {
       batchIndex++;
@@ -1013,9 +1011,10 @@ markSentBtn.addEventListener("click", async function() {
   }
 });
 
+// XÓA KHÁCH HÀNG KHỎI SUPABASE
 window.deleteCustomer = async function(id) {
-  if (!confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) return;
-  showLoading("Đang xóa khách hàng...");
+  if (!confirm("Bạn có chắc chắn muốn xóa khách hàng này khỏi cơ sở dữ liệu?")) return;
+  showLoading("Đang xóa dữ liệu...");
   try {
     const { error } = await supabaseClient.from("customers").delete().eq("id", id);
     if (error) throw error;
@@ -1029,6 +1028,7 @@ window.deleteCustomer = async function(id) {
   }
 };
 
+// THÊM THỦ CÔNG 1 KHÁCH HÀNG VÀO SUPABASE
 customerForm.addEventListener("submit", async function(e) {
   e.preventDefault();
   const name = document.getElementById("name").value.trim();
@@ -1054,11 +1054,11 @@ customerForm.addEventListener("submit", async function(e) {
     sent: false
   };
 
-  showLoading("Đang lưu khách hàng...");
+  showLoading("Đang lưu vào Supabase...");
   try {
     const { error } = await supabaseClient.from("customers").insert([payload]);
     if (error) throw error;
-    showToast("Thêm khách hàng thành công!", "success");
+    showToast("Đã lưu khách hàng mới!", "success");
     customerForm.reset();
     await loadCustomers();
   } catch (error) {
@@ -1069,12 +1069,13 @@ customerForm.addEventListener("submit", async function(e) {
   }
 });
 
+// ĐỌC VÀ LƯU DANH SÁCH EXCEL VÀO SUPABASE
 excelFile.addEventListener("change", function(e) {
   const file = e.target.files[0];
   if (!file) return;
 
   const reader = new FileReader();
-  showLoading("Đang đọc và xử lý file Excel...");
+  showLoading("Đang đọc file Excel...");
 
   reader.onload = async function(event) {
     try {
@@ -1116,6 +1117,7 @@ excelFile.addEventListener("change", function(e) {
         return;
       }
 
+      showLoading(`Đang đẩy ${newCustomers.length} khách hàng lên Supabase...`);
       const { error } = await supabaseClient.from("customers").insert(newCustomers);
       if (error) throw error;
 
@@ -1133,6 +1135,7 @@ excelFile.addEventListener("change", function(e) {
   reader.readAsArrayBuffer(file);
 });
 
+// KHI TRANG LÀM MỚI (F5) SẼ TỰ ĐỘNG CHẠY LOAD DỮ LIỆU TỪ SUPABASE
 document.addEventListener("DOMContentLoaded", async function() {
   const authenticated = await checkAuth();
   if (authenticated) {
