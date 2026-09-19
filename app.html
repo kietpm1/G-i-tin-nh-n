@@ -196,9 +196,19 @@
       background: #0369a1;
     }
 
-    .primary-btn:disabled {
-      opacity: .6;
-      cursor: not-allowed;
+    .send-all-btn {
+      background: #16a34a;
+      color: white;
+      border: 0;
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .send-all-btn:hover {
+      background: #15803d;
     }
 
     /* =========================
@@ -262,6 +272,9 @@
     .table-title {
       font-size: 18px;
       font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .search-box {
@@ -355,15 +368,6 @@
     .delete-btn {
       background: #fee2e2;
       color: #991b1b;
-    }
-
-    .mark-btn {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .small-btn:hover {
-      opacity: .8;
     }
 
     .empty {
@@ -470,7 +474,7 @@
     }
 
     /* =========================
-       TOAST
+       TOAST & LOADING
     ========================= */
 
     .toast {
@@ -489,21 +493,9 @@
       font-size: 13px;
     }
 
-    .toast.show {
-      display: block;
-    }
-
-    .toast.success {
-      background: #166534;
-    }
-
-    .toast.error {
-      background: #991b1b;
-    }
-
-    /* =========================
-       LOADING
-    ========================= */
+    .toast.show { display: block; }
+    .toast.success { background: #166534; }
+    .toast.error { background: #991b1b; }
 
     .loading {
       display: none;
@@ -517,9 +509,7 @@
       gap: 12px;
     }
 
-    .loading.show {
-      display: flex;
-    }
+    .loading.show { display: flex; }
 
     .spinner {
       width: 38px;
@@ -531,283 +521,116 @@
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
 
     @media (max-width: 900px) {
-      .action-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .form-group.full {
-        grid-column: auto;
-      }
-
-      .stats {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .table-header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .search-box {
-        max-width: none;
-      }
-
-      .title {
-        font-size: 20px;
-      }
+      .action-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .header-inner { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
-
+<!-- HEADER -->
 <header class="header">
   <div class="header-inner">
-
     <div>
       <div class="title">📋 HỆ THỐNG NHẮC NỢ</div>
-      <div class="subtitle">
-        Quản lý khách hàng và hỗ trợ gửi tin nhắn
-      </div>
+      <div class="subtitle">Quản lý khách hàng và hỗ trợ gửi tin nhắn</div>
     </div>
-
     <div class="user-area">
-      <div class="user-email" id="userEmail">
-        Đang kiểm tra tài khoản...
-      </div>
-
-      <button class="logout-btn" id="logoutBtn">
-        Đăng xuất
-      </button>
+      <div class="user-email" id="userEmail">Đang kiểm tra tài khoản...</div>
+      <button class="logout-btn" id="logoutBtn">Đăng xuất</button>
     </div>
-
   </div>
 </header>
 
-
 <main class="container">
 
-  <!-- =========================
-       ACTION
-  ========================= -->
-
+  <!-- ACTION CARDS -->
   <section class="action-grid">
-
-    <!-- EXCEL -->
-
     <div class="card">
-
       <h2>📥 Nhập danh sách từ Excel</h2>
-
-      <div class="card-description">
-        Chọn file Excel để lưu danh sách khách hàng vào hệ thống.
-      </div>
-
+      <div class="card-description">Chọn file Excel để lưu danh sách khách hàng vào hệ thống.</div>
       <div class="file-box">
-
-        <input
-          type="file"
-          id="excelFile"
-          accept=".xlsx,.xls"
-        >
-
-        <div style="margin-top:10px;color:#64748b;font-size:12px;">
-          Hệ thống tự nhận diện tên các cột phổ biến.
-        </div>
-
+        <input type="file" id="excelFile" accept=".xlsx,.xls">
+        <div style="margin-top:10px;color:#64748b;font-size:12px;">Hệ thống tự nhận diện tên các cột phổ biến.</div>
       </div>
-
     </div>
 
-
-    <!-- MANUAL -->
-
     <div class="card">
-
       <h2>✍️ Nhập khách hàng</h2>
-
-      <div class="card-description">
-        Nhập từng khách hàng trực tiếp vào hệ thống.
-      </div>
-
+      <div class="card-description">Nhập từng khách hàng trực tiếp vào hệ thống.</div>
       <form id="customerForm">
-
         <div class="form-grid">
-
           <div class="form-group">
             <label>Họ và tên *</label>
-
-            <input
-              type="text"
-              id="name"
-              required
-              placeholder="Nguyễn Văn A"
-            >
+            <input type="text" id="name" required placeholder="Nguyễn Văn A">
           </div>
-
-
           <div class="form-group">
             <label>SĐT khách hàng</label>
-
-            <input
-              type="text"
-              id="phone"
-              placeholder="09xxxxxxxx"
-            >
+            <input type="text" id="phone" placeholder="09xxxxxxxx">
           </div>
-
-
           <div class="form-group">
             <label>Số tiền</label>
-
-            <input
-              type="text"
-              id="amount"
-              inputmode="numeric"
-              placeholder="100.000.000"
-            >
+            <input type="text" id="amount" inputmode="numeric" placeholder="100.000.000">
           </div>
-
-
           <div class="form-group">
             <label>Số ngày trễ hạn</label>
-
-            <input
-              type="number"
-              id="overdueDays"
-              min="0"
-              placeholder="30"
-            >
+            <input type="number" id="overdueDays" min="0" placeholder="30">
           </div>
-
-
           <div class="form-group full">
             <label>Thông tin nợ ở VPBank</label>
-
-            <textarea
-              id="debtInfo"
-              placeholder="Ví dụ: Khoản vay tiêu dùng..."
-            ></textarea>
+            <textarea id="debtInfo" placeholder="Ví dụ: Khoản vay tiêu dùng..."></textarea>
           </div>
-
-
           <div class="form-group full">
             <label>SĐT người hỗ trợ</label>
-
-            <input
-              type="text"
-              id="supportPhone"
-              placeholder="09xxxxxxxx"
-            >
+            <input type="text" id="supportPhone" placeholder="09xxxxxxxx">
           </div>
-
         </div>
-
-
-        <button
-          type="submit"
-          class="primary-btn"
-          id="saveBtn"
-        >
-          💾 LƯU KHÁCH HÀNG
-        </button>
-
+        <button type="submit" class="primary-btn" id="saveBtn">💾 LƯU KHÁCH HÀNG</button>
       </form>
-
     </div>
-
   </section>
 
-
-  <!-- =========================
-       STATS
-  ========================= -->
-
+  <!-- STATS -->
   <section class="stats">
-
     <div class="stat">
       <div class="stat-title">Tổng khách hàng</div>
       <div class="stat-number" id="totalCount">0</div>
     </div>
-
     <div class="stat">
       <div class="stat-title">Có SĐT</div>
       <div class="stat-number" id="phoneCount">0</div>
     </div>
-
     <div class="stat sent">
       <div class="stat-title">Đã gửi</div>
       <div class="stat-number" id="sentCount">0</div>
     </div>
-
     <div class="stat unsent">
       <div class="stat-title">Chưa gửi</div>
       <div class="stat-number" id="unsentCount">0</div>
     </div>
-
   </section>
 
-
-  <!-- =========================
-       CUSTOMER TABLE
-  ========================= -->
-
+  <!-- TABLE -->
   <section class="table-card">
-
     <div class="table-header">
-
       <div class="table-title">
-        👥 Danh sách khách hàng
+        <span>👥 Danh sách khách hàng</span>
+        <button class="send-all-btn" id="sendAllBtn">📱 GỬI TẤT CẢ (LẦN LƯỢT)</button>
       </div>
-
       <div class="search-box">
-
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="🔎 Tìm tên hoặc SĐT..."
-        >
-
+        <input type="text" id="searchInput" placeholder="🔎 Tìm tên hoặc SĐT...">
       </div>
-
     </div>
 
-
     <div class="table-wrapper">
-
       <table>
-
         <thead>
-
           <tr>
             <th>STT</th>
             <th>Họ và tên</th>
@@ -819,878 +642,248 @@
             <th>Trạng thái</th>
             <th>Thao tác</th>
           </tr>
-
         </thead>
-
         <tbody id="customerTableBody"></tbody>
-
       </table>
-
     </div>
-
   </section>
 
 </main>
 
-
-<!-- =========================
-     MODAL
-========================= -->
-
+<!-- MODAL -->
 <div class="modal" id="messageModal">
-
   <div class="modal-box">
-
     <div class="modal-header">
-
-      <h3>📱 Nội dung nhắn tin</h3>
-
-      <button
-        class="close-modal"
-        id="closeModalBtn"
-      >
-        ×
-      </button>
-
+      <h3 id="modalTitle">📱 Nội dung nhắn tin</h3>
+      <button class="close-modal" id="closeModalBtn">×</button>
     </div>
-
-
     <div class="modal-body">
-
-      <div
-        class="message-preview"
-        id="messagePreview"
-      ></div>
-
-
-      <div
-        style="
-          margin-top:10px;
-          font-size:12px;
-          color:#64748b;
-        "
-      >
-        Lưu ý: trình duyệt chỉ mở ứng dụng SMS trên thiết bị.
-        Bạn cần bấm nút gửi trong ứng dụng SMS để thực sự gửi tin.
+      <div class="message-preview" id="messagePreview"></div>
+      <div style="margin-top:10px;font-size:12px;color:#64748b;">
+        Lưu ý: Bạn cần bấm "MỞ SMS" để mở ứng dụng nhắn tin và gửi. Bấm "ĐÁNH DẤU ĐÃ GỬI" để hoàn tất người này.
       </div>
-
-
       <div class="modal-actions">
-
-        <button
-          class="secondary-btn"
-          id="closeModalBtn2"
-        >
-          ĐÓNG
-        </button>
-
-        <button
-          class="secondary-btn copy-btn"
-          id="copyBtn"
-        >
-          📋 SAO CHÉP
-        </button>
-
-        <button
-          class="secondary-btn sms-btn"
-          id="sendSmsBtn"
-        >
-          📱 MỞ SMS
-        </button>
-
-        <button
-          class="secondary-btn confirm-btn"
-          id="markSentBtn"
-        >
-          ✅ ĐÁNH DẤU ĐÃ GỬI
-        </button>
-
+        <button class="secondary-btn" id="closeModalBtn2">ĐÓNG</button>
+        <button class="secondary-btn copy-btn" id="copyBtn">📋 SAO CHÉP</button>
+        <button class="secondary-btn sms-btn" id="sendSmsBtn">📱 MỞ SMS</button>
+        <button class="secondary-btn confirm-btn" id="markSentBtn">✅ ĐÁNH DẤU ĐÃ GỬI</button>
       </div>
-
     </div>
-
   </div>
-
 </div>
-
-
-<!-- =========================
-     TOAST
-========================= -->
 
 <div id="toast" class="toast"></div>
 
-
-<!-- =========================
-     LOADING
-========================= -->
-
 <div id="loading" class="loading">
-
   <div class="spinner"></div>
-
-  <div id="loadingText">
-    Đang xử lý...
-  </div>
-
+  <div id="loadingText">Đang xử lý...</div>
 </div>
 
-
 <script>
-
-/* ============================================================
-   SUPABASE
-============================================================ */
-
-const SUPABASE_URL =
-  "https://isxvczpecvklrqfozehw.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_IYmVGfP-zGJSIWx-nqA4IA_FLNziitb";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* ============================================================
-   GLOBAL
-============================================================ */
+const SUPABASE_URL = "https://isxvczpecvklrqfozehw.supabase.co";
+const SUPABASE_KEY = "sb_publishable_IYmVGfP-zGJSIWx-nqA4IA_FLNziitb";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
-
 let customers = [];
-
 let filteredCustomers = [];
-
 let currentCustomer = null;
 
+// Biến quản lý chế độ Gửi Tất Cả
+let batchQueue = [];
+let batchIndex = 0;
+let isBatchMode = false;
 
-/* ============================================================
-   DOM
-============================================================ */
-
-const userEmail =
-  document.getElementById("userEmail");
-
-const logoutBtn =
-  document.getElementById("logoutBtn");
-
-const excelFile =
-  document.getElementById("excelFile");
-
-const customerForm =
-  document.getElementById("customerForm");
-
-const saveBtn =
-  document.getElementById("saveBtn");
-
-const amountInput =
-  document.getElementById("amount");
-
-const searchInput =
-  document.getElementById("searchInput");
-
-const customerTableBody =
-  document.getElementById("customerTableBody");
-
-const messageModal =
-  document.getElementById("messageModal");
-
-const messagePreview =
-  document.getElementById("messagePreview");
-
-const closeModalBtn =
-  document.getElementById("closeModalBtn");
-
-const closeModalBtn2 =
-  document.getElementById("closeModalBtn2");
-
-const copyBtn =
-  document.getElementById("copyBtn");
-
-const sendSmsBtn =
-  document.getElementById("sendSmsBtn");
-
-const markSentBtn =
-  document.getElementById("markSentBtn");
-
-
-/* ============================================================
-   LOADING
-============================================================ */
+const userEmail = document.getElementById("userEmail");
+const logoutBtn = document.getElementById("logoutBtn");
+const excelFile = document.getElementById("excelFile");
+const customerForm = document.getElementById("customerForm");
+const amountInput = document.getElementById("amount");
+const searchInput = document.getElementById("searchInput");
+const customerTableBody = document.getElementById("customerTableBody");
+const messageModal = document.getElementById("messageModal");
+const messagePreview = document.getElementById("messagePreview");
+const closeModalBtn = document.getElementById("closeModalBtn");
+const closeModalBtn2 = document.getElementById("closeModalBtn2");
+const copyBtn = document.getElementById("copyBtn");
+const sendSmsBtn = document.getElementById("sendSmsBtn");
+const markSentBtn = document.getElementById("markSentBtn");
+const sendAllBtn = document.getElementById("sendAllBtn");
 
 function showLoading(text = "Đang xử lý...") {
-
-  document.getElementById("loadingText").textContent =
-    text;
-
-  document.getElementById("loading")
-    .classList.add("show");
+  document.getElementById("loadingText").textContent = text;
+  document.getElementById("loading").classList.add("show");
 }
-
 
 function hideLoading() {
-
-  document.getElementById("loading")
-    .classList.remove("show");
+  document.getElementById("loading").classList.remove("show");
 }
 
-
-/* ============================================================
-   TOAST
-============================================================ */
-
-function showToast(
-  message,
-  type = ""
-) {
-
-  const toast =
-    document.getElementById("toast");
-
+function showToast(message, type = "") {
+  const toast = document.getElementById("toast");
   toast.textContent = message;
-
-  toast.className =
-    "toast show " + type;
-
-  setTimeout(() => {
-
-    toast.className = "toast";
-
-  }, 3500);
+  toast.className = "toast show " + type;
+  setTimeout(() => { toast.className = "toast"; }, 3500);
 }
-
-
-/* ============================================================
-   MONEY
-============================================================ */
 
 function parseMoneyNumber(value) {
-
-  if (
-    value === null ||
-    value === undefined ||
-    value === ""
-  ) {
-    return 0;
-  }
-
-  if (typeof value === "number") {
-
-    if (!Number.isFinite(value)) {
-      return 0;
-    }
-
-    return Math.round(value);
-  }
-
-
-  let text =
-    String(value)
-      .trim()
-      .toLowerCase();
-
-
-  if (!text) {
-    return 0;
-  }
-
-
-  text = text
-    .replace(/₫/g, "")
-    .replace(/vnd/g, "")
-    .replace(/\s/g, "");
-
-
-  const digits =
-    text.replace(/[^\d]/g, "");
-
-
-  if (!digits) {
-    return 0;
-  }
-
-
-  const number =
-    Number(digits);
-
-
-  return Number.isFinite(number)
-    ? number
-    : 0;
+  if (value === null || value === undefined || value === "") return 0;
+  if (typeof value === "number") return Math.round(value);
+  let text = String(value).trim().toLowerCase().replace(/₫/g, "").replace(/vnd/g, "").replace(/\s/g, "");
+  const digits = text.replace(/[^\d]/g, "");
+  return digits ? Number(digits) : 0;
 }
-
 
 function formatMoney(value) {
-
-  const number =
-    parseMoneyNumber(value);
-
-  return number
-    ? number.toLocaleString("vi-VN")
-    : "0";
+  const number = parseMoneyNumber(value);
+  return number ? number.toLocaleString("vi-VN") : "0";
 }
 
+amountInput.addEventListener("input", function () {
+  this.value = this.value.replace(/[^\d]/g, "");
+});
 
-/* ============================================================
-   AMOUNT INPUT
-============================================================ */
-
-amountInput.addEventListener(
-  "input",
-  function () {
-
-    this.value =
-      this.value.replace(/[^\d]/g, "");
-
-  }
-);
-
-
-amountInput.addEventListener(
-  "blur",
-  function () {
-
-    if (!this.value.trim()) {
-      return;
-    }
-
-    const number =
-      parseMoneyNumber(this.value);
-
-    this.value =
-      number
-        ? number.toLocaleString("vi-VN")
-        : "";
-
-  }
-);
-
-
-/* ============================================================
-   NORMALIZE TEXT
-============================================================ */
+amountInput.addEventListener("blur", function () {
+  if (!this.value.trim()) return;
+  const number = parseMoneyNumber(this.value);
+  this.value = number ? number.toLocaleString("vi-VN") : "";
+});
 
 function normalizeText(text) {
-
-  return String(text ?? "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d");
+  return String(text ?? "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
 }
 
-
-/* ============================================================
-   GET EXCEL VALUE
-============================================================ */
-
-function getExcelValue(
-  row,
-  possibleNames
-) {
-
-  const keys =
-    Object.keys(row);
-
-
+function getExcelValue(row, possibleNames) {
+  const keys = Object.keys(row);
   for (const name of possibleNames) {
-
-    if (
-      Object.prototype.hasOwnProperty.call(
-        row,
-        name
-      )
-    ) {
-
-      return row[name];
-
-    }
-
+    if (Object.prototype.hasOwnProperty.call(row, name)) return row[name];
   }
-
-
   const normalizedMap = {};
-
-  keys.forEach(key => {
-
-    normalizedMap[
-      normalizeText(key)
-    ] = key;
-
-  });
-
-
+  keys.forEach(key => { normalizedMap[normalizeText(key)] = key; });
   for (const name of possibleNames) {
-
-    const normalizedName =
-      normalizeText(name);
-
-    const realKey =
-      normalizedMap[normalizedName];
-
-    if (realKey !== undefined) {
-
-      return row[realKey];
-
-    }
-
+    const realKey = normalizedMap[normalizeText(name)];
+    if (realKey !== undefined) return row[realKey];
   }
-
-
   return "";
 }
 
-
-/* ============================================================
-   EXCEL COLUMN NAMES
-============================================================ */
-
 const EXCEL_COLUMNS = {
-
-  name: [
-    "Họ và tên",
-    "Ho va ten",
-    "HỌ VÀ TÊN",
-    "Họ tên",
-    "Ho ten"
-  ],
-
-  phone: [
-    "SĐT khách hàng",
-    "SDT khách hàng",
-    "Số điện thoại",
-    "So dien thoai",
-    "SĐT KH",
-    "SDT KH",
-    "SDT"
-  ],
-
-  amount: [
-    "Số tiền",
-    "So tien",
-    "SỐ TIỀN"
-  ],
-
-  overdueDays: [
-    "Số ngày trễ hạn",
-    "So ngay tre han",
-    "Trễ hạn",
-    "Tre han",
-    "Số ngày quá hạn",
-    "So ngay qua han"
-  ],
-
-  debtInfo: [
-    "Thông tin nợ ở VPBank",
-    "Thong tin no o VPBank",
-    "Thông tin nợ",
-    "Thong tin no",
-    "Thông tin khoản nợ"
-  ],
-
-  supportPhone: [
-    "SĐT người hỗ trợ",
-    "SDT nguoi ho tro",
-    "SĐT hỗ trợ",
-    "SDT ho tro",
-    "SĐT người HT"
-  ]
-
+  name: ["Họ và tên", "Ho va ten", "HỌ VÀ TÊN", "Họ tên", "Ho ten"],
+  phone: ["SĐT khách hàng", "SDT khách hàng", "Số điện thoại", "So dien thoai", "SĐT KH", "SDT KH", "SDT"],
+  amount: ["Số tiền", "So tien", "SỐ TIỀN"],
+  overdueDays: ["Số ngày trễ hạn", "So ngay tre han", "Trễ hạn", "Tre han", "Số ngày quá hạn"],
+  debtInfo: ["Thông tin nợ ở VPBank", "Thong tin no o VPBank", "Thông tin nợ", "Thong tin no"],
+  supportPhone: ["SĐT người hỗ trợ", "SDT nguoi ho tro", "SĐT hỗ trợ", "SDT ho tro"]
 };
 
-
-/* ============================================================
-   AUTH
-============================================================ */
-
 async function checkAuth() {
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient.auth.getSession();
-
-
-  if (
-    error ||
-    !data.session
-  ) {
-
-    window.location.href =
-      "index.html";
-
+  const { data, error } = await supabaseClient.auth.getSession();
+  if (error || !data.session) {
+    window.location.href = "index.html";
     return false;
   }
-
-
-  currentUser =
-    data.session.user;
-
-
-  userEmail.textContent =
-    currentUser.email || "Tài khoản";
-
-
+  currentUser = data.session.user;
+  userEmail.textContent = currentUser.email || "Tài khoản";
   return true;
 }
 
-
-/* ============================================================
-   LOGOUT
-============================================================ */
-
-logoutBtn.addEventListener(
-  "click",
-  async function () {
-
-    await supabaseClient.auth.signOut();
-
-    window.location.href =
-      "index.html";
-
-  }
-);
-
-
-/* ============================================================
-   LOAD CUSTOMERS
-============================================================ */
+logoutBtn.addEventListener("click", async function () {
+  await supabaseClient.auth.signOut();
+  window.location.href = "index.html";
+});
 
 async function loadCustomers() {
-
-  showLoading(
-    "Đang tải danh sách khách hàng..."
-  );
-
-
+  showLoading("Đang tải danh sách khách hàng...");
   try {
+    const { data, error } = await supabaseClient
+      .from("customers")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("customers")
-        .select("*")
-        .order(
-          "created_at",
-          {
-            ascending: false
-          }
-        );
-
-
-    if (error) {
-      throw error;
-    }
-
-
-    customers =
-      data || [];
-
-
+    if (error) throw error;
+    customers = data || [];
     applySearch();
-
-
   } catch (error) {
-
     console.error(error);
-
-    showToast(
-      "Không tải được dữ liệu: " +
-      error.message,
-      "error"
-    );
-
+    showToast("Không tải được dữ liệu: " + error.message, "error");
   } finally {
-
     hideLoading();
-
   }
-
 }
 
-
-/* ============================================================
-   SEARCH
-============================================================ */
-
-searchInput.addEventListener(
-  "input",
-  function () {
-
-    applySearch();
-
-  }
-);
-
+searchInput.addEventListener("input", applySearch);
 
 function applySearch() {
-
-  const keyword =
-    normalizeText(
-      searchInput.value
-    );
-
-
+  const keyword = normalizeText(searchInput.value);
   if (!keyword) {
-
-    filteredCustomers =
-      [...customers];
-
+    filteredCustomers = [...customers];
   } else {
-
-    filteredCustomers =
-      customers.filter(customer => {
-
-        const name =
-          normalizeText(
-            customer.name
-          );
-
-        const phone =
-          normalizeText(
-            customer.phone
-          );
-
-        return (
-          name.includes(keyword) ||
-          phone.includes(keyword)
-        );
-
-      });
-
+    filteredCustomers = customers.filter(customer => {
+      const name = normalizeText(customer.name);
+      const phone = normalizeText(customer.phone);
+      return name.includes(keyword) || phone.includes(keyword);
+    });
   }
-
-
   renderTable();
-
   updateStats();
-
 }
-
-
-/* ============================================================
-   STATS
-============================================================ */
 
 function updateStats() {
+  const total = customers.length;
+  const phones = customers.filter(item => String(item.phone || "").trim()).length;
+  const sent = customers.filter(item => item.sent === true).length;
+  const unsent = total - sent;
 
-  const total =
-    customers.length;
-
-
-  const phones =
-    customers.filter(
-      item =>
-        String(item.phone || "").trim()
-    ).length;
-
-
-  const sent =
-    customers.filter(
-      item => item.sent === true
-    ).length;
-
-
-  const unsent =
-    total - sent;
-
-
-  document.getElementById(
-    "totalCount"
-  ).textContent = total;
-
-
-  document.getElementById(
-    "phoneCount"
-  ).textContent = phones;
-
-
-  document.getElementById(
-    "sentCount"
-  ).textContent = sent;
-
-
-  document.getElementById(
-    "unsentCount"
-  ).textContent = unsent;
-
+  document.getElementById("totalCount").textContent = total;
+  document.getElementById("phoneCount").textContent = phones;
+  document.getElementById("sentCount").textContent = sent;
+  document.getElementById("unsentCount").textContent = unsent;
 }
 
-
-/* ============================================================
-   RENDER TABLE
-============================================================ */
-
 function renderTable() {
-
   customerTableBody.innerHTML = "";
-
-
-  if (
-    !filteredCustomers.length
-  ) {
-
-    customerTableBody.innerHTML = `
-      <tr>
-        <td colspan="9" class="empty">
-          Chưa có khách hàng.
-        </td>
-      </tr>
-    `;
-
+  if (!filteredCustomers.length) {
+    customerTableBody.innerHTML = `<tr><td colspan="9" class="empty">Chưa có khách hàng.</td></tr>`;
     return;
   }
 
+  filteredCustomers.forEach((customer, index) => {
+    const tr = document.createElement("tr");
+    const statusHtml = customer.sent
+      ? `<span class="status sent">✅ Đã gửi</span>`
+      : `<span class="status not-sent">⏳ Chưa gửi</span>`;
 
-  filteredCustomers.forEach(
-    (customer, index) => {
-
-      const tr =
-        document.createElement("tr");
-
-
-      const statusHtml =
-        customer.sent
-          ? `<span class="status sent">
-               ✅ Đã gửi
-             </span>`
-          : `<span class="status not-sent">
-               ⏳ Chưa gửi
-             </span>`;
-
-
-      tr.innerHTML = `
-
-        <td>
-          ${index + 1}
-        </td>
-
-        <td>
-          <strong>
-            ${escapeHtml(customer.name || "")}
-          </strong>
-        </td>
-
-        <td class="phone">
-          ${escapeHtml(customer.phone || "—")}
-        </td>
-
-        <td class="money">
-          ${formatMoney(customer.amount)}
-        </td>
-
-        <td>
-          ${Number(customer.overdue_days || 0)}
-          ngày
-        </td>
-
-        <td>
-          ${escapeHtml(
-            customer.debt_info || "—"
-          )}
-        </td>
-
-        <td class="phone">
-          ${escapeHtml(
-            customer.support_phone || "—"
-          )}
-        </td>
-
-        <td>
-          ${statusHtml}
-        </td>
-
-        <td>
-
-          <div class="action-buttons">
-
-            <button
-              class="small-btn view-btn"
-              onclick="viewCustomer('${customer.id}')"
-            >
-              👁 XEM
-            </button>
-
-            <button
-              class="small-btn send-btn"
-              onclick="openSendCustomer('${customer.id}')"
-            >
-              📱 GỬI
-            </button>
-
-            <button
-              class="small-btn delete-btn"
-              onclick="deleteCustomer('${customer.id}')"
-            >
-              🗑 XÓA
-            </button>
-
-          </div>
-
-        </td>
-
-      `;
-
-
-      customerTableBody.appendChild(tr);
-
-    }
-  );
-
+    tr.innerHTML = `
+      <td>${index + 1}</td>
+      <td><strong>${escapeHtml(customer.name || "")}</strong></td>
+      <td class="phone">${escapeHtml(customer.phone || "—")}</td>
+      <td class="money">${formatMoney(customer.amount)}</td>
+      <td>${Number(customer.overdue_days || 0)} ngày</td>
+      <td>${escapeHtml(customer.debt_info || "—")}</td>
+      <td class="phone">${escapeHtml(customer.support_phone || "—")}</td>
+      <td>${statusHtml}</td>
+      <td>
+        <div class="action-buttons">
+          <button class="small-btn view-btn" onclick="viewCustomer('${customer.id}')">👁 XEM</button>
+          <button class="small-btn send-btn" onclick="openSendCustomer('${customer.id}')">📱 GỬI</button>
+          <button class="small-btn delete-btn" onclick="deleteCustomer('${customer.id}')">🗑 XÓA</button>
+        </div>
+      </td>
+    `;
+    customerTableBody.appendChild(tr);
+  });
 }
-
-
-/* ============================================================
-   ESCAPE HTML
-============================================================ */
 
 function escapeHtml(value) {
-
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
+  return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-
-/* ============================================================
-   MESSAGE
-============================================================ */
-
 function createMessage(customer) {
-
-  const name =
-    customer.name || "Anh/Chị";
-
-
-  const days =
-    Number(customer.overdue_days || 0);
-
-
-  const amount =
-    formatMoney(customer.amount);
-
-
-  const debtInfo =
-    customer.debt_info ||
-    "Khoản nợ tại VPBank";
-
-
-  const supportPhone =
-    customer.support_phone ||
-    "bộ phận hỗ trợ VPBank";
-
+  const name = customer.name || "Anh/Chị";
+  const days = Number(customer.overdue_days || 0);
+  const amount = formatMoney(customer.amount);
+  const debtInfo = customer.debt_info || "Khoản nợ tại VPBank";
+  const supportPhone = customer.support_phone || "bộ phận hỗ trợ VPBank";
 
   return `Kính gửi Anh/Chị ${name},
 
@@ -1701,487 +894,251 @@ Thông tin khoản nợ: ${debtInfo}.
 Anh/Chị vui lòng liên hệ ${supportPhone} để được hỗ trợ xử lý khoản nợ.
 
 Trân trọng.`;
-
 }
 
+window.viewCustomer = function(id) {
+  const customer = customers.find(item => String(item.id) === String(id));
+  if (!customer) return;
+  currentCustomer = customer;
+  isBatchMode = false;
+  document.getElementById("modalTitle").textContent = "📱 Nội dung nhắn tin";
+  messagePreview.textContent = createMessage(customer);
+  messageModal.classList.add("show");
+};
 
-/* ============================================================
-   VIEW CUSTOMER
-============================================================ */
-
-window.viewCustomer =
-  function(id) {
-
-    const customer =
-      customers.find(
-        item =>
-          String(item.id) === String(id)
-      );
-
-
-    if (!customer) {
-      return;
-    }
-
-
-    currentCustomer =
-      customer;
-
-
-    messagePreview.textContent =
-      createMessage(customer);
-
-
-    messageModal.classList.add(
-      "show"
-    );
-
-  };
-
-
-/* ============================================================
-   OPEN SEND
-============================================================ */
-
-window.openSendCustomer =
-  function(id) {
-
-    const customer =
-      customers.find(
-        item =>
-          String(item.id) === String(id)
-      );
-
-
-    if (!customer) {
-      return;
-    }
-
-
-    currentCustomer =
-      customer;
-
-
-    if (
-      !String(customer.phone || "").trim()
-    ) {
-
-      showToast(
-        "Khách hàng này chưa có SĐT.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    messagePreview.textContent =
-      createMessage(customer);
-
-
-    messageModal.classList.add(
-      "show"
-    );
-
-  };
-
-
-/* ============================================================
-   CLOSE MODAL
-============================================================ */
-
-function closeModal() {
-
-  messageModal.classList.remove(
-    "show"
-  );
-
-  currentCustomer = null;
-
-}
-
-
-closeModalBtn.addEventListener(
-  "click",
-  closeModal
-);
-
-
-closeModalBtn2.addEventListener(
-  "click",
-  closeModal
-);
-
-
-messageModal.addEventListener(
-  "click",
-  function(event) {
-
-    if (
-      event.target === messageModal
-    ) {
-
-      closeModal();
-
-    }
-
+window.openSendCustomer = function(id) {
+  const customer = customers.find(item => String(item.id) === String(id));
+  if (!customer) return;
+  if (!String(customer.phone || "").trim()) {
+    showToast("Khách hàng này chưa có SĐT.", "error");
+    return;
   }
-);
-
-
-/* ============================================================
-   COPY MESSAGE
-============================================================ */
-
-copyBtn.addEventListener(
-  "click",
-  async function() {
-
-    if (!currentCustomer) {
-      return;
-    }
-
-
-    const message =
-      createMessage(
-        currentCustomer
-      );
-
-
-    try {
-
-      await navigator.clipboard.writeText(
-        message
-      );
-
-
-      showToast(
-        "Đã sao chép nội dung tin nhắn.",
-        "success"
-      );
-
-    } catch (error) {
-
-      showToast(
-        "Không thể sao chép.",
-        "error"
-      );
-
-    }
-
-  }
-);
-
+  currentCustomer = customer;
+  isBatchMode = false;
+  document.getElementById("modalTitle").textContent = "📱 Nội dung nhắn tin";
+  messagePreview.textContent = createMessage(customer);
+  messageModal.classList.add("show");
+};
 
 /* ============================================================
-   OPEN SMS
+   XỬ LÝ GỬI TẤT CẢ (LẦN LƯỢT)
 ============================================================ */
 
-sendSmsBtn.addEventListener(
-  "click",
-  function() {
+sendAllBtn.addEventListener("click", function() {
+  // Lọc ra các khách hàng chưa gửi và có SĐT
+  batchQueue = customers.filter(item => !item.sent && String(item.phone || "").trim());
 
-    if (!currentCustomer) {
-      return;
-    }
-
-    const phone = String(currentCustomer.phone || "").trim();
-
-    if (!phone) {
-      showToast("Khách hàng chưa có SĐT.", "error");
-      return;
-    }
-
-    const message = createMessage(currentCustomer);
-
-    // Hỗ trợ định dạng liên kết SMS linh hoạt cho cả iOS và Android
-    const isiOS = navigator.userAgent.match(/(iPhone|iPod|iPad)/i);
-    const smsUrl = "sms:" + encodeURIComponent(phone) + (isiOS ? "&body=" : "?body=") + encodeURIComponent(message);
-
-    window.location.href = smsUrl;
-  }
-);
-
-
-/* ============================================================
-   MARK AS SENT
-============================================================ */
-
-markSentBtn.addEventListener(
-  "click",
-  async function() {
-
-    if (!currentCustomer) {
-      return;
-    }
-
-    showLoading("Đang cập nhật trạng thái...");
-
-    try {
-
-      const { error } = await supabaseClient
-        .from("customers")
-        .update({ sent: true })
-        .eq("id", currentCustomer.id);
-
-      if (error) {
-        throw error;
-      }
-
-      currentCustomer.sent = true;
-
-      showToast("Đã đánh dấu là đã gửi!", "success");
-
-      closeModal();
-
-      await loadCustomers();
-
-    } catch (error) {
-
-      console.error(error);
-
-      showToast("Không thể cập nhật: " + error.message, "error");
-
-    } finally {
-
-      hideLoading();
-
-    }
-
-  }
-);
-
-
-/* ============================================================
-   DELETE CUSTOMER
-============================================================ */
-
-window.deleteCustomer = async function(id) {
-
-  if (!confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) {
+  if (!batchQueue.length) {
+    showToast("Không có khách hàng nào CHƯA GỬI có SĐT hợp lệ.", "error");
     return;
   }
 
-  showLoading("Đang xóa khách hàng...");
-
-  try {
-
-    const { error } = await supabaseClient
-      .from("customers")
-      .delete()
-      .eq("id", id);
-
-    if (error) {
-      throw error;
-    }
-
-    showToast("Đã xóa khách hàng thành công.", "success");
-
-    await loadCustomers();
-
-  } catch (error) {
-
-    console.error(error);
-
-    showToast("Xóa thất bại: " + error.message, "error");
-
-  } finally {
-
-    hideLoading();
-
-  }
-
-};
-
-
-/* ============================================================
-   SAVE CUSTOMER FORM (MANUAL INPUT)
-============================================================ */
-
-customerForm.addEventListener(
-  "submit",
-  async function(e) {
-
-    e.preventDefault();
-
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const rawAmount = document.getElementById("amount").value;
-    const overdueDays = document.getElementById("overdueDays").value;
-    const debtInfo = document.getElementById("debtInfo").value.trim();
-    const supportPhone = document.getElementById("supportPhone").value.trim();
-
-    if (!name) {
-      showToast("Vui lòng nhập họ và tên khách hàng.", "error");
-      return;
-    }
-
-    const payload = {
-      user_id: currentUser.id,
-      name: name,
-      phone: phone,
-      amount: parseMoneyNumber(rawAmount),
-      overdue_days: Number(overdueDays || 0),
-      debt_info: debtInfo,
-      support_phone: supportPhone,
-      sent: false
-    };
-
-    showLoading("Đang lưu khách hàng...");
-
-    try {
-
-      const { error } = await supabaseClient
-        .from("customers")
-        .insert([payload]);
-
-      if (error) {
-        throw error;
-      }
-
-      showToast("Thêm khách hàng thành công!", "success");
-
-      customerForm.reset();
-
-      await loadCustomers();
-
-    } catch (error) {
-
-      console.error(error);
-
-      showToast("Lưu thất bại: " + error.message, "error");
-
-    } finally {
-
-      hideLoading();
-
-    }
-
-  }
-);
-
-
-/* ============================================================
-   IMPORT FROM EXCEL
-============================================================ */
-
-excelFile.addEventListener(
-  "change",
-  function(e) {
-
-    const file = e.target.files[0];
-
-    if (!file) {
-      return;
-    }
-
-    const reader = new FileReader();
-
-    showLoading("Đang đọc và xử lý file Excel...");
-
-    reader.onload = async function(event) {
-
-      try {
-
-        const data = new Uint8Array(event.target.result);
-
-        const workbook = XLSX.read(data, { type: "array" });
-
-        const firstSheetName = workbook.SheetNames[0];
-
-        const worksheet = workbook.Sheets[firstSheetName];
-
-        const jsonRows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-
-        if (!jsonRows.length) {
-          showToast("File Excel không có dữ liệu.", "error");
-          hideLoading();
-          return;
-        }
-
-        const newCustomers = jsonRows.map(row => {
-
-          const name = getExcelValue(row, EXCEL_COLUMNS.name);
-
-          const phone = getExcelValue(row, EXCEL_COLUMNS.phone);
-
-          const amountVal = getExcelValue(row, EXCEL_COLUMNS.amount);
-
-          const overdueVal = getExcelValue(row, EXCEL_COLUMNS.overdueDays);
-
-          const debtInfo = getExcelValue(row, EXCEL_COLUMNS.debtInfo);
-
-          const supportPhone = getExcelValue(row, EXCEL_COLUMNS.supportPhone);
-
-          return {
-            user_id: currentUser.id,
-            name: String(name || "").trim(),
-            phone: String(phone || "").trim(),
-            amount: parseMoneyNumber(amountVal),
-            overdue_days: Number(parseMoneyNumber(overdueVal) || 0),
-            debt_info: String(debtInfo || "").trim(),
-            support_phone: String(supportPhone || "").trim(),
-            sent: false
-          };
-
-        }).filter(item => item.name !== "");
-
-        if (!newCustomers.length) {
-          showToast("Không tìm thấy hàng hợp lệ có 'Họ và tên' trong file.", "error");
-          hideLoading();
-          return;
-        }
-
-        const { error } = await supabaseClient
-          .from("customers")
-          .insert(newCustomers);
-
-        if (error) {
-          throw error;
-        }
-
-        showToast(`Đã nhập thành công ${newCustomers.length} khách hàng!`, "success");
-
-        excelFile.value = "";
-
-        await loadCustomers();
-
-      } catch (error) {
-
-        console.error(error);
-
-        showToast("Lỗi nhập Excel: " + error.message, "error");
-
-      } finally {
-
-        hideLoading();
-
-      }
-
-    };
-
-    reader.readAsArrayBuffer(file);
-
-  }
-);
-
-
-/* ============================================================
-   INIT
-============================================================ */
-
-document.addEventListener("DOMContentLoaded", async function() {
-
-  const authenticated = await checkAuth();
-
-  if (authenticated) {
-
-    await loadCustomers();
-
-  }
-
+  isBatchMode = true;
+  batchIndex = 0;
+  processNextBatch();
 });
 
+function processNextBatch() {
+  if (batchIndex >= batchQueue.length) {
+    showToast("Đã duyệt xong tất cả khách hàng chưa gửi!", "success");
+    closeModal();
+    isBatchMode = false;
+    return;
+  }
+
+  currentCustomer = batchQueue[batchIndex];
+  document.getElementById("modalTitle").textContent = `📱 Gửi tin (${batchIndex + 1}/${batchQueue.length}): ${currentCustomer.name}`;
+  messagePreview.textContent = createMessage(currentCustomer);
+  messageModal.classList.add("show");
+}
+
+function closeModal() {
+  messageModal.classList.remove("show");
+  currentCustomer = null;
+}
+
+closeModalBtn.addEventListener("click", closeModal);
+closeModalBtn2.addEventListener("click", closeModal);
+
+copyBtn.addEventListener("click", async function() {
+  if (!currentCustomer) return;
+  try {
+    await navigator.clipboard.writeText(createMessage(currentCustomer));
+    showToast("Đã sao chép nội dung tin nhắn.", "success");
+  } catch (error) {
+    showToast("Không thể sao chép.", "error");
+  }
+});
+
+sendSmsBtn.addEventListener("click", function() {
+  if (!currentCustomer) return;
+  const phone = String(currentCustomer.phone || "").trim();
+  if (!phone) {
+    showToast("Khách hàng chưa có SĐT.", "error");
+    return;
+  }
+  const message = createMessage(currentCustomer);
+  const isiOS = navigator.userAgent.match(/(iPhone|iPod|iPad)/i);
+  const smsUrl = "sms:" + encodeURIComponent(phone) + (isiOS ? "&body=" : "?body=") + encodeURIComponent(message);
+  window.location.href = smsUrl;
+});
+
+markSentBtn.addEventListener("click", async function() {
+  if (!currentCustomer) return;
+  showLoading("Đang cập nhật trạng thái...");
+
+  try {
+    const { error } = await supabaseClient
+      .from("customers")
+      .update({ sent: true })
+      .eq("id", currentCustomer.id);
+
+    if (error) throw error;
+
+    currentCustomer.sent = true;
+    showToast("Đã đánh dấu là đã gửi!", "success");
+    await loadCustomers();
+
+    if (isBatchMode) {
+      batchIndex++;
+      processNextBatch();
+    } else {
+      closeModal();
+    }
+  } catch (error) {
+    console.error(error);
+    showToast("Không thể cập nhật: " + error.message, "error");
+  } finally {
+    hideLoading();
+  }
+});
+
+window.deleteCustomer = async function(id) {
+  if (!confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) return;
+  showLoading("Đang xóa khách hàng...");
+  try {
+    const { error } = await supabaseClient.from("customers").delete().eq("id", id);
+    if (error) throw error;
+    showToast("Đã xóa khách hàng thành công.", "success");
+    await loadCustomers();
+  } catch (error) {
+    console.error(error);
+    showToast("Xóa thất bại: " + error.message, "error");
+  } finally {
+    hideLoading();
+  }
+};
+
+customerForm.addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const rawAmount = document.getElementById("amount").value;
+  const overdueDays = document.getElementById("overdueDays").value;
+  const debtInfo = document.getElementById("debtInfo").value.trim();
+  const supportPhone = document.getElementById("supportPhone").value.trim();
+
+  if (!name) {
+    showToast("Vui lòng nhập họ và tên khách hàng.", "error");
+    return;
+  }
+
+  const payload = {
+    user_id: currentUser.id,
+    name: name,
+    phone: phone,
+    amount: parseMoneyNumber(rawAmount),
+    overdue_days: Number(overdueDays || 0),
+    debt_info: debtInfo,
+    support_phone: supportPhone,
+    sent: false
+  };
+
+  showLoading("Đang lưu khách hàng...");
+  try {
+    const { error } = await supabaseClient.from("customers").insert([payload]);
+    if (error) throw error;
+    showToast("Thêm khách hàng thành công!", "success");
+    customerForm.reset();
+    await loadCustomers();
+  } catch (error) {
+    console.error(error);
+    showToast("Lưu thất bại: " + error.message, "error");
+  } finally {
+    hideLoading();
+  }
+});
+
+excelFile.addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  showLoading("Đang đọc và xử lý file Excel...");
+
+  reader.onload = async function(event) {
+    try {
+      const data = new Uint8Array(event.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+      const jsonRows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+      if (!jsonRows.length) {
+        showToast("File Excel không có dữ liệu.", "error");
+        hideLoading();
+        return;
+      }
+
+      const newCustomers = jsonRows.map(row => {
+        const name = getExcelValue(row, EXCEL_COLUMNS.name);
+        const phone = getExcelValue(row, EXCEL_COLUMNS.phone);
+        const amountVal = getExcelValue(row, EXCEL_COLUMNS.amount);
+        const overdueVal = getExcelValue(row, EXCEL_COLUMNS.overdueDays);
+        const debtInfo = getExcelValue(row, EXCEL_COLUMNS.debtInfo);
+        const supportPhone = getExcelValue(row, EXCEL_COLUMNS.supportPhone);
+
+        return {
+          user_id: currentUser.id,
+          name: String(name || "").trim(),
+          phone: String(phone || "").trim(),
+          amount: parseMoneyNumber(amountVal),
+          overdue_days: Number(parseMoneyNumber(overdueVal) || 0),
+          debt_info: String(debtInfo || "").trim(),
+          support_phone: String(supportPhone || "").trim(),
+          sent: false
+        };
+      }).filter(item => item.name !== "");
+
+      if (!newCustomers.length) {
+        showToast("Không tìm thấy hàng hợp lệ có 'Họ và tên' trong file.", "error");
+        hideLoading();
+        return;
+      }
+
+      const { error } = await supabaseClient.from("customers").insert(newCustomers);
+      if (error) throw error;
+
+      showToast(`Đã nhập thành công ${newCustomers.length} khách hàng!`, "success");
+      excelFile.value = "";
+      await loadCustomers();
+    } catch (error) {
+      console.error(error);
+      showToast("Lỗi nhập Excel: " + error.message, "error");
+    } finally {
+      hideLoading();
+    }
+  };
+
+  reader.readAsArrayBuffer(file);
+});
+
+document.addEventListener("DOMContentLoaded", async function() {
+  const authenticated = await checkAuth();
+  if (authenticated) {
+    await loadCustomers();
+  }
+});
 </script>
 
 </body>
