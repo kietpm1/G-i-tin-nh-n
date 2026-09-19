@@ -29,7 +29,7 @@
     .auth-card {
       background: white;
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       border-radius: 16px;
       padding: 32px 28px;
       box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
@@ -78,35 +78,22 @@
       box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
     }
 
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
     .btn {
-      flex: 1;
+      width: 100%;
       border: 0;
       padding: 12px;
       border-radius: 8px;
       font-weight: bold;
       font-size: 14px;
       cursor: pointer;
+      margin-top: 10px;
       transition: opacity 0.2s;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
-    }
-
-    .btn-primary {
       background: #0284c7;
       color: white;
     }
 
-    .btn-secondary {
-      background: #e2e8f0;
-      color: #334155;
+    .btn:hover {
+      opacity: 0.9;
     }
 
     .toast {
@@ -133,7 +120,7 @@
   <div class="auth-card">
     <div class="auth-header">
       <h1>📋 HỆ THỐNG NHẮC NỢ</h1>
-      <p>Đăng nhập hoặc Đăng ký tài khoản để tiếp tục</p>
+      <p>Đăng nhập tài khoản để tiếp tục</p>
     </div>
 
     <form id="authForm">
@@ -147,10 +134,7 @@
         <input type="password" id="password" required placeholder="••••••••">
       </div>
 
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary" id="loginBtn">Đăng nhập</button>
-        <button type="button" class="btn btn-secondary" id="signupBtn">Đăng ký</button>
-      </div>
+      <button type="button" class="btn" id="loginBtn">Đăng nhập</button>
     </form>
   </div>
 
@@ -164,7 +148,6 @@
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
     const loginBtn = document.getElementById("loginBtn");
-    const signupBtn = document.getElementById("signupBtn");
 
     function showToast(message, type = "") {
       const toast = document.getElementById("toast");
@@ -205,31 +188,6 @@
       } else {
         showToast("Đăng nhập thành công!", "success");
         setTimeout(() => { window.location.href = "app.html"; }, 800);
-      }
-    });
-
-    // Xử lý đăng ký
-    signupBtn.addEventListener("click", async () => {
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
-
-      if (!email || !password) {
-        showToast("Vui lòng nhập đầy đủ Email và Mật khẩu.", "error");
-        return;
-      }
-
-      signupBtn.disabled = true;
-      signupBtn.textContent = "Đang xử lý...";
-
-      const { data, error } = await supabaseClient.auth.signUp({ email, password });
-
-      signupBtn.disabled = false;
-      signupBtn.textContent = "Đăng ký";
-
-      if (error) {
-        showToast("Đăng ký thất bại: " + error.message, "error");
-      } else {
-        showToast("Đăng ký thành công! Vui lòng kiểm tra email (nếu có xác thực) hoặc đăng nhập.", "success");
       }
     });
   </script>
