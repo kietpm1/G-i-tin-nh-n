@@ -20,7 +20,7 @@
 
 
   <!-- =====================================================
-       SHEETJS - ĐỌC EXCEL
+       SHEETJS - ĐỌC FILE EXCEL
   ====================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -34,15 +34,15 @@
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f3f6fb;
-      color: #172033;
-    }
 
-    button,
-    input,
-    textarea {
-      font-family: inherit;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f3f6fb;
+
+      color: #172033;
     }
 
 
@@ -51,11 +51,13 @@
     ====================================================== */
 
     .header {
-      background: linear-gradient(
-        135deg,
-        #1769ff,
-        #0d47c9
-      );
+
+      background:
+        linear-gradient(
+          135deg,
+          #1769ff,
+          #0d47c9
+        );
 
       color: white;
 
@@ -69,24 +71,30 @@
 
       gap: 20px;
 
-      box-shadow: 0 4px 15px rgba(0,0,0,.12);
+      box-shadow:
+        0 4px 15px rgba(0,0,0,.12);
     }
 
     .header h1 {
+
       margin: 0;
 
       font-size: 22px;
+
     }
 
     .header p {
+
       margin: 6px 0 0;
 
       font-size: 14px;
 
       opacity: .9;
+
     }
 
     .logout-btn {
+
       border: none;
 
       background: white;
@@ -100,10 +108,13 @@
       font-weight: bold;
 
       cursor: pointer;
+
     }
 
     .logout-btn:hover {
+
       background: #edf3ff;
+
     }
 
 
@@ -112,6 +123,7 @@
     ====================================================== */
 
     .container {
+
       width: 100%;
 
       max-width: 1450px;
@@ -119,14 +131,16 @@
       margin: auto;
 
       padding: 25px;
+
     }
 
 
     /* =====================================================
-       ACTION CARDS
+       ACTION
     ====================================================== */
 
     .action-grid {
+
       display: grid;
 
       grid-template-columns:
@@ -135,9 +149,11 @@
       gap: 18px;
 
       margin-bottom: 20px;
+
     }
 
     .action-card {
+
       background: white;
 
       padding: 20px;
@@ -146,23 +162,29 @@
 
       box-shadow:
         0 4px 15px rgba(0,0,0,.06);
+
     }
 
     .action-card h2 {
+
       margin: 0 0 8px;
 
       font-size: 18px;
+
     }
 
     .action-card p {
+
       color: #667085;
 
       font-size: 14px;
 
       margin: 7px 0 15px;
+
     }
 
     .file-label {
+
       display: inline-flex;
 
       align-items: center;
@@ -180,18 +202,19 @@
       cursor: pointer;
 
       font-weight: bold;
+
     }
 
     .file-label:hover {
+
       background: #0f56d6;
+
     }
 
     #excelFile {
-      display: none;
-    }
 
-    #fileStatus {
-      min-height: 18px;
+      display: none;
+
     }
 
 
@@ -200,6 +223,7 @@
     ====================================================== */
 
     .form-card {
+
       background: white;
 
       border-radius: 15px;
@@ -210,69 +234,89 @@
         0 4px 15px rgba(0,0,0,.06);
 
       margin-bottom: 20px;
+
     }
 
     .form-card h2 {
+
       margin-top: 0;
+
     }
 
     .form-grid {
+
       display: grid;
 
       grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
       gap: 15px;
+
     }
 
     .field {
+
       display: flex;
 
       flex-direction: column;
+
     }
 
     .field.full {
+
       grid-column: 1 / -1;
+
     }
 
     .field label {
+
       font-size: 14px;
 
       font-weight: bold;
 
       margin-bottom: 7px;
+
     }
 
     .field input,
     .field textarea {
+
       width: 100%;
 
       padding: 12px;
 
-      border: 1px solid #d8dee9;
+      border:
+        1px solid #d8dee9;
 
       border-radius: 9px;
 
       outline: none;
 
       font-size: 14px;
+
     }
 
     .field input:focus,
     .field textarea:focus {
+
       border-color: #1769ff;
 
       box-shadow:
-        0 0 0 3px rgba(23,105,255,.10);
+        0 0 0 3px
+        rgba(23,105,255,.10);
+
     }
 
     .field textarea {
+
       min-height: 90px;
 
       resize: vertical;
+
     }
 
     .add-btn {
+
       margin-top: 18px;
 
       border: none;
@@ -288,10 +332,13 @@
       font-weight: bold;
 
       cursor: pointer;
+
     }
 
     .add-btn:hover {
+
       background: #12813b;
+
     }
 
 
@@ -300,6 +347,7 @@
     ====================================================== */
 
     .stats {
+
       display: grid;
 
       grid-template-columns:
@@ -308,9 +356,11 @@
       gap: 15px;
 
       margin-bottom: 20px;
+
     }
 
     .stat-card {
+
       background: white;
 
       padding: 18px;
@@ -319,20 +369,25 @@
 
       box-shadow:
         0 4px 15px rgba(0,0,0,.05);
+
     }
 
     .stat-title {
+
       color: #667085;
 
       font-size: 13px;
+
     }
 
     .stat-number {
+
       font-size: 25px;
 
       font-weight: bold;
 
       margin-top: 6px;
+
     }
 
 
@@ -341,6 +396,7 @@
     ====================================================== */
 
     .list-card {
+
       background: white;
 
       border-radius: 15px;
@@ -349,9 +405,11 @@
 
       box-shadow:
         0 4px 15px rgba(0,0,0,.06);
+
     }
 
     .list-header {
+
       display: flex;
 
       justify-content: space-between;
@@ -361,22 +419,28 @@
       gap: 15px;
 
       margin-bottom: 15px;
+
     }
 
     .list-header h2 {
+
       margin: 0;
+
     }
 
     .search {
+
       width: 300px;
 
       padding: 11px 13px;
 
-      border: 1px solid #d8dee9;
+      border:
+        1px solid #d8dee9;
 
       border-radius: 9px;
 
       outline: none;
+
     }
 
 
@@ -385,18 +449,23 @@
     ====================================================== */
 
     .table-wrapper {
+
       overflow-x: auto;
+
     }
 
     table {
+
       width: 100%;
 
       border-collapse: collapse;
 
       min-width: 1150px;
+
     }
 
     th {
+
       background: #eef3f9;
 
       padding: 12px;
@@ -406,28 +475,35 @@
       font-size: 13px;
 
       white-space: nowrap;
+
     }
 
     td {
+
       padding: 12px;
 
-      border-bottom: 1px solid #edf0f5;
+      border-bottom:
+        1px solid #edf0f5;
 
       font-size: 14px;
 
       vertical-align: middle;
+
     }
 
     tr:hover td {
+
       background: #fafcff;
+
     }
 
 
     /* =====================================================
-       TABLE BUTTONS
+       BUTTONS
     ====================================================== */
 
     .btn {
+
       border: none;
 
       padding: 8px 10px;
@@ -441,34 +517,37 @@
       font-size: 12px;
 
       margin: 2px;
+
     }
 
     .btn:hover {
+
       opacity: .85;
+
     }
 
     .btn-view {
+
       background: #e8f0ff;
 
       color: #1769ff;
+
     }
 
     .btn-send {
+
       background: #16a34a;
 
       color: white;
+
     }
 
     .btn-delete {
+
       background: #fee2e2;
 
       color: #dc2626;
-    }
 
-    .btn-copy {
-      background: #fef3c7;
-
-      color: #92400e;
     }
 
 
@@ -477,11 +556,13 @@
     ====================================================== */
 
     .empty {
+
       text-align: center;
 
       padding: 50px 20px;
 
       color: #667085;
+
     }
 
 
@@ -490,6 +571,7 @@
     ====================================================== */
 
     .modal {
+
       display: none;
 
       position: fixed;
@@ -498,20 +580,25 @@
 
       z-index: 1000;
 
-      background: rgba(0,0,0,.55);
+      background:
+        rgba(0,0,0,.55);
 
       align-items: center;
 
       justify-content: center;
 
       padding: 20px;
+
     }
 
     .modal.show {
+
       display: flex;
+
     }
 
     .modal-box {
+
       width: 100%;
 
       max-width: 620px;
@@ -523,10 +610,13 @@
       padding: 22px;
 
       box-shadow:
-        0 15px 50px rgba(0,0,0,.25);
+        0 15px 50px
+        rgba(0,0,0,.25);
+
     }
 
     .modal-header {
+
       display: flex;
 
       justify-content: space-between;
@@ -534,15 +624,19 @@
       align-items: center;
 
       margin-bottom: 15px;
+
     }
 
     .modal-header h2 {
+
       margin: 0;
 
       font-size: 19px;
+
     }
 
     .close-btn {
+
       border: none;
 
       background: #f1f5f9;
@@ -556,12 +650,15 @@
       cursor: pointer;
 
       font-size: 18px;
+
     }
 
     .message-preview {
+
       background: #f8fafc;
 
-      border: 1px solid #e2e8f0;
+      border:
+        1px solid #e2e8f0;
 
       padding: 16px;
 
@@ -576,9 +673,11 @@
       max-height: 380px;
 
       overflow-y: auto;
+
     }
 
     .modal-actions {
+
       display: grid;
 
       grid-template-columns:
@@ -587,9 +686,11 @@
       gap: 10px;
 
       margin-top: 15px;
+
     }
 
     .modal-actions button {
+
       border: none;
 
       padding: 12px;
@@ -599,24 +700,31 @@
       font-weight: bold;
 
       cursor: pointer;
+
     }
 
     .modal-close {
+
       background: #e5e7eb;
 
       color: #374151;
+
     }
 
     .modal-copy {
+
       background: #fef3c7;
 
       color: #92400e;
+
     }
 
     .modal-send {
+
       background: #16a34a;
 
       color: white;
+
     }
 
 
@@ -625,6 +733,7 @@
     ====================================================== */
 
     .toast {
+
       position: fixed;
 
       right: 20px;
@@ -644,11 +753,15 @@
       display: none;
 
       box-shadow:
-        0 8px 25px rgba(0,0,0,.2);
+        0 8px 25px
+        rgba(0,0,0,.2);
+
     }
 
     .toast.show {
+
       display: block;
+
     }
 
 
@@ -659,37 +772,51 @@
     @media (max-width: 750px) {
 
       .header {
+
         flex-direction: column;
 
         align-items: flex-start;
+
       }
 
       .container {
+
         padding: 15px;
+
       }
 
       .action-grid,
       .form-grid,
       .stats {
+
         grid-template-columns: 1fr;
+
       }
 
       .field.full {
+
         grid-column: auto;
+
       }
 
       .list-header {
+
         flex-direction: column;
 
         align-items: stretch;
+
       }
 
       .search {
+
         width: 100%;
+
       }
 
       .modal-actions {
+
         grid-template-columns: 1fr;
+
       }
 
     }
@@ -731,19 +858,14 @@
 </header>
 
 
-<!-- =====================================================
-     MAIN
-====================================================== -->
-
 <main class="container">
 
 
   <!-- ===================================================
-       IMPORT
+       IMPORT EXCEL
   ==================================================== -->
 
   <section class="action-grid">
-
 
     <div class="action-card">
 
@@ -752,7 +874,7 @@
       </h2>
 
       <p>
-        Chọn file Excel để đưa danh sách khách hàng vào hệ thống.
+        Tải danh sách khách hàng từ file Excel.
       </p>
 
       <label
@@ -780,7 +902,7 @@
       </h2>
 
       <p>
-        Thêm từng khách hàng trực tiếp trên web.
+        Nhập từng khách hàng trực tiếp trên web.
       </p>
 
       <button
@@ -796,7 +918,7 @@
 
 
   <!-- ===================================================
-       MANUAL FORM
+       FORM
   ==================================================== -->
 
   <section
@@ -835,7 +957,8 @@
 
         <input
           id="phoneInput"
-          type="tel"
+          type="text"
+          inputmode="numeric"
           placeholder="0901234567"
         >
 
@@ -848,11 +971,18 @@
           Số tiền
         </label>
 
+        <!--
+          QUAN TRỌNG:
+          Không format khi đang gõ.
+          Chỉ format khi blur.
+        -->
+
         <input
           id="amountInput"
           type="text"
           inputmode="numeric"
-          placeholder="25.000.000"
+          autocomplete="off"
+          placeholder="25000000"
         >
 
       </div>
@@ -896,7 +1026,8 @@
 
         <input
           id="supportPhoneInput"
-          type="tel"
+          type="text"
+          inputmode="numeric"
           placeholder="0791234567"
         >
 
@@ -975,7 +1106,7 @@
 
 
   <!-- ===================================================
-       CUSTOMER LIST
+       LIST
   ==================================================== -->
 
   <section class="list-card">
@@ -1042,7 +1173,9 @@
         </thead>
 
 
-        <tbody id="customerTableBody">
+        <tbody
+          id="customerTableBody"
+        >
         </tbody>
 
       </table>
@@ -1062,7 +1195,6 @@
       Hãy tải Excel hoặc nhập thủ công.
 
     </div>
-
 
   </section>
 
@@ -1177,13 +1309,13 @@ let currentCustomer = null;
 
 
 // ========================================================
-// AUTH
+// KIỂM TRA ĐĂNG NHẬP
 // ========================================================
 
 async function checkAuth() {
 
   const {
-    data: { session },
+    data,
     error
   } =
     await supabaseClient.auth.getSession();
@@ -1191,13 +1323,14 @@ async function checkAuth() {
 
   if (
     error ||
-    !session
+    !data.session
   ) {
 
     window.location.href =
       "index.html";
 
     return;
+
   }
 
 
@@ -1205,7 +1338,8 @@ async function checkAuth() {
     .getElementById("currentUser")
     .textContent =
     "Đang đăng nhập: " +
-    session.user.email;
+    data.session.user.email;
+
 }
 
 
@@ -1213,7 +1347,7 @@ checkAuth();
 
 
 // ========================================================
-// LOGOUT
+// ĐĂNG XUẤT
 // ========================================================
 
 document
@@ -1235,30 +1369,37 @@ document
 // TOAST
 // ========================================================
 
-function showToast(text) {
+function showToast(message) {
 
   const toast =
     document.getElementById("toast");
 
-  toast.textContent =
-    text;
 
-  toast.classList.add("show");
+  toast.textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
 
 
   setTimeout(
     function() {
 
-      toast.classList.remove("show");
+      toast.classList.remove(
+        "show"
+      );
 
     },
     2500
   );
+
 }
 
 
 // ========================================================
-// PARSE MONEY
+// XỬ LÝ SỐ TIỀN
 // ========================================================
 
 function parseMoneyNumber(value) {
@@ -1270,24 +1411,22 @@ function parseMoneyNumber(value) {
   ) {
 
     return 0;
+
   }
 
 
-  // Excel trả về number
+  /*
+    Nếu Excel trả về number
+  */
 
   if (
     typeof value === "number"
   ) {
 
-    if (
-      Number.isFinite(value)
-    ) {
+    return Number.isFinite(value)
+      ? Math.round(value)
+      : 0;
 
-      return Math.round(value);
-
-    }
-
-    return 0;
   }
 
 
@@ -1302,18 +1441,8 @@ function parseMoneyNumber(value) {
   if (!text) {
 
     return 0;
+
   }
-
-
-  /*
-    Các dạng hỗ trợ:
-
-    25000000
-    25.000.000
-    25,000,000
-    25.000.000,50
-    25,000,000.50
-  */
 
 
   const hasDot =
@@ -1323,7 +1452,12 @@ function parseMoneyNumber(value) {
     text.includes(",");
 
 
-  // Có cả . và ,
+  /*
+    Ví dụ:
+
+    25.000.000,50
+    25,000,000.50
+  */
 
   if (
     hasDot &&
@@ -1341,8 +1475,6 @@ function parseMoneyNumber(value) {
       lastComma > lastDot
     ) {
 
-      // 25.000.000,50
-
       text =
         text
           .replace(/\./g, "")
@@ -1350,18 +1482,17 @@ function parseMoneyNumber(value) {
 
     } else {
 
-      // 25,000,000.50
-
       text =
-        text
-          .replace(/,/g, "");
+        text.replace(/,/g, "");
 
     }
 
   }
 
 
-  // Chỉ có dấu phẩy
+  /*
+    25,000,000
+  */
 
   else if (
     hasComma
@@ -1370,11 +1501,6 @@ function parseMoneyNumber(value) {
     const parts =
       text.split(",");
 
-
-    /*
-      25,000,000
-      -> hàng nghìn
-    */
 
     if (
       parts.length > 2 ||
@@ -1387,9 +1513,7 @@ function parseMoneyNumber(value) {
       text =
         text.replace(/,/g, "");
 
-    }
-
-    else {
+    } else {
 
       text =
         text.replace(",", ".");
@@ -1399,7 +1523,9 @@ function parseMoneyNumber(value) {
   }
 
 
-  // Chỉ có dấu chấm
+  /*
+    25.000.000
+  */
 
   else if (
     hasDot
@@ -1408,11 +1534,6 @@ function parseMoneyNumber(value) {
     const parts =
       text.split(".");
 
-
-    /*
-      25.000.000
-      -> hàng nghìn
-    */
 
     if (
       parts.length > 2 ||
@@ -1430,7 +1551,9 @@ function parseMoneyNumber(value) {
   }
 
 
-  // Chỉ giữ số
+  /*
+    Chỉ giữ số
+  */
 
   text =
     text.replace(
@@ -1448,31 +1571,111 @@ function parseMoneyNumber(value) {
   ) {
 
     return 0;
+
   }
 
 
   return Math.round(number);
+
 }
 
 
 // ========================================================
-// FORMAT MONEY
+// FORMAT SỐ TIỀN
 // ========================================================
 
 function formatMoney(value) {
 
-  const number =
-    parseMoneyNumber(value);
-
-
-  return number.toLocaleString(
+  return parseMoneyNumber(
+    value
+  ).toLocaleString(
     "vi-VN"
   );
+
 }
 
 
 // ========================================================
-// CLEAN PHONE
+// Ô NHẬP SỐ TIỀN
+// ========================================================
+
+const amountInput =
+  document.getElementById(
+    "amountInput"
+  );
+
+
+/*
+  KHI ĐANG GÕ:
+
+  2
+  25
+  250
+  2500
+  25000
+  250000
+  2500000
+  25000000
+
+  Không format giữa chừng.
+*/
+
+amountInput.addEventListener(
+  "input",
+  function() {
+
+    this.value =
+      this.value.replace(
+        /[^\d]/g,
+        ""
+      );
+
+  }
+);
+
+
+/*
+  KHI RỜI KHỎI Ô:
+
+  25000000
+
+  thành
+
+  25.000.000
+*/
+
+amountInput.addEventListener(
+  "blur",
+  function() {
+
+    if (
+      !this.value.trim()
+    ) {
+
+      return;
+
+    }
+
+
+    const number =
+      parseMoneyNumber(
+        this.value
+      );
+
+
+    this.value =
+      number
+        ? number.toLocaleString(
+            "vi-VN"
+          )
+        : "";
+
+  }
+);
+
+
+// ========================================================
+// XỬ LÝ SĐT
 // ========================================================
 
 function cleanPhone(value) {
@@ -1483,20 +1686,22 @@ function cleanPhone(value) {
   ) {
 
     return "";
+
   }
 
 
   let phone =
     String(value)
       .trim()
-      .replace(/\s/g, "")
-      .replace(/-/g, "");
+      .replace(
+        /[\s.-]/g,
+        ""
+      );
 
 
   /*
-    Nếu Excel đọc số điện thoại thành
-    dạng 9.01234567E+9 thì cố gắng
-    chuyển về số nguyên.
+    Excel đôi khi đọc số điện thoại
+    thành dạng 9.01234567E+9
   */
 
   if (
@@ -1522,52 +1727,21 @@ function cleanPhone(value) {
 
 
   return phone;
+
 }
 
 
 // ========================================================
-// FORMAT AMOUNT INPUT
-// ========================================================
-
-document
-  .getElementById("amountInput")
-  .addEventListener(
-    "input",
-    function() {
-
-      const number =
-        parseMoneyNumber(
-          this.value
-        );
-
-
-      if (
-        number === 0 &&
-        this.value.trim() !== ""
-      ) {
-
-        return;
-      }
-
-
-      this.value =
-        number
-          ? number.toLocaleString("vi-VN")
-          : "";
-
-    }
-  );
-
-
-// ========================================================
-// ADD MANUAL CUSTOMER
+// THÊM KHÁCH HÀNG THỦ CÔNG
 // ========================================================
 
 function addManualCustomer() {
 
   const name =
     document
-      .getElementById("nameInput")
+      .getElementById(
+        "nameInput"
+      )
       .value
       .trim();
 
@@ -1575,7 +1749,9 @@ function addManualCustomer() {
   const phone =
     cleanPhone(
       document
-        .getElementById("phoneInput")
+        .getElementById(
+          "phoneInput"
+        )
         .value
     );
 
@@ -1583,21 +1759,27 @@ function addManualCustomer() {
   const amount =
     parseMoneyNumber(
       document
-        .getElementById("amountInput")
+        .getElementById(
+          "amountInput"
+        )
         .value
     );
 
 
   const days =
     document
-      .getElementById("daysInput")
+      .getElementById(
+        "daysInput"
+      )
       .value
       .trim();
 
 
   const debtInfo =
     document
-      .getElementById("debtInfoInput")
+      .getElementById(
+        "debtInfoInput"
+      )
       .value
       .trim();
 
@@ -1605,7 +1787,9 @@ function addManualCustomer() {
   const supportPhone =
     cleanPhone(
       document
-        .getElementById("supportPhoneInput")
+        .getElementById(
+          "supportPhoneInput"
+        )
         .value
     );
 
@@ -1617,6 +1801,7 @@ function addManualCustomer() {
     );
 
     return;
+
   }
 
 
@@ -1627,22 +1812,29 @@ function addManualCustomer() {
     );
 
     return;
+
   }
 
 
   customers.push({
 
-    name: name,
+    name:
+      name,
 
-    phone: phone,
+    phone:
+      phone,
 
-    amount: amount,
+    amount:
+      amount,
 
-    days: days,
+    days:
+      days,
 
-    debtInfo: debtInfo,
+    debtInfo:
+      debtInfo,
 
-    supportPhone: supportPhone
+    supportPhone:
+      supportPhone
 
   });
 
@@ -1659,49 +1851,63 @@ function addManualCustomer() {
 
 
 // ========================================================
-// CLEAR FORM
+// XÓA FORM
 // ========================================================
 
 function clearForm() {
 
   document
-    .getElementById("nameInput")
+    .getElementById(
+      "nameInput"
+    )
     .value = "";
 
 
   document
-    .getElementById("phoneInput")
+    .getElementById(
+      "phoneInput"
+    )
     .value = "";
 
 
   document
-    .getElementById("amountInput")
+    .getElementById(
+      "amountInput"
+    )
     .value = "";
 
 
   document
-    .getElementById("daysInput")
+    .getElementById(
+      "daysInput"
+    )
     .value = "";
 
 
   document
-    .getElementById("debtInfoInput")
+    .getElementById(
+      "debtInfoInput"
+    )
     .value = "";
 
 
   document
-    .getElementById("supportPhoneInput")
+    .getElementById(
+      "supportPhoneInput"
+    )
     .value = "";
 
 }
 
 
 // ========================================================
-// EXCEL FILE
+// EXCEL
 // ========================================================
 
 document
-  .getElementById("excelFile")
+  .getElementById(
+    "excelFile"
+  )
   .addEventListener(
     "change",
     handleExcel
@@ -1709,7 +1915,7 @@ document
 
 
 // ========================================================
-// HANDLE EXCEL
+// ĐỌC EXCEL
 // ========================================================
 
 async function handleExcel(event) {
@@ -1721,12 +1927,17 @@ async function handleExcel(event) {
   if (!file) {
 
     return;
+
   }
 
 
-  document
-    .getElementById("fileStatus")
-    .textContent =
+  const status =
+    document.getElementById(
+      "fileStatus"
+    );
+
+
+  status.textContent =
     "⏳ Đang đọc file...";
 
 
@@ -1743,16 +1954,6 @@ async function handleExcel(event) {
           type: "array"
         }
       );
-
-
-    if (
-      !workbook.SheetNames.length
-    ) {
-
-      throw new Error(
-        "Không tìm thấy sheet."
-      );
-    }
 
 
     const sheet =
@@ -1777,9 +1978,8 @@ async function handleExcel(event) {
         "File Excel không có dữ liệu."
       );
 
-      event.target.value = "";
-
       return;
+
     }
 
 
@@ -1790,6 +1990,7 @@ async function handleExcel(event) {
 
     rows.forEach(
       function(row) {
+
 
         const name =
           getExcelValue(
@@ -1876,11 +2077,19 @@ async function handleExcel(event) {
           );
 
 
-        if (!String(name).trim()) {
+        /*
+          Nếu không có họ tên
+          thì bỏ qua dòng.
+        */
+
+        if (
+          !String(name).trim()
+        ) {
 
           skipped++;
 
           return;
+
         }
 
 
@@ -1899,7 +2108,9 @@ async function handleExcel(event) {
             String(days).trim(),
 
           debtInfo:
-            String(debtInfo).trim(),
+            String(
+              debtInfo
+            ).trim(),
 
           supportPhone:
             supportPhone
@@ -1916,9 +2127,7 @@ async function handleExcel(event) {
     renderCustomers();
 
 
-    document
-      .getElementById("fileStatus")
-      .textContent =
+    status.textContent =
       `✅ Đã nhập ${imported} khách hàng` +
       (
         skipped
@@ -1927,38 +2136,36 @@ async function handleExcel(event) {
       );
 
 
-    event.target.value = "";
+    showToast(
+      `Đã nhập ${imported} khách hàng.`
+    );
 
 
   } catch (error) {
 
     console.error(
-      "Lỗi Excel:",
       error
     );
 
 
-    alert(
-      "Không đọc được file Excel.\n\n" +
-      "Vui lòng kiểm tra lại tên cột và định dạng file."
-    );
-
-
-    document
-      .getElementById("fileStatus")
-      .textContent =
+    status.textContent =
       "❌ Lỗi đọc file";
 
 
-    event.target.value = "";
+    alert(
+      "Không đọc được file Excel."
+    );
 
   }
+
+
+  event.target.value = "";
 
 }
 
 
 // ========================================================
-// GET EXCEL VALUE
+// LẤY GIÁ TRỊ EXCEL
 // ========================================================
 
 function getExcelValue(
@@ -1966,7 +2173,10 @@ function getExcelValue(
   possibleNames
 ) {
 
-  // Kiểm tra chính xác
+
+  /*
+    Kiểm tra tên cột chính xác
+  */
 
   for (
     const name of possibleNames
@@ -1980,12 +2190,15 @@ function getExcelValue(
     ) {
 
       return row[name];
+
     }
 
   }
 
 
-  // Kiểm tra không dấu
+  /*
+    Kiểm tra không dấu
+  */
 
   const keys =
     Object.keys(row);
@@ -2000,15 +2213,19 @@ function getExcelValue(
 
 
     for (
-      const possible of possibleNames
+      const possible
+      of possibleNames
     ) {
 
       if (
         normalizedKey ===
-        normalizeText(possible)
+        normalizeText(
+          possible
+        )
       ) {
 
         return row[key];
+
       }
 
     }
@@ -2022,7 +2239,7 @@ function getExcelValue(
 
 
 // ========================================================
-// NORMALIZE TEXT
+// BỎ DẤU
 // ========================================================
 
 function normalizeText(text) {
@@ -2035,13 +2252,16 @@ function normalizeText(text) {
       /[\u0300-\u036f]/g,
       ""
     )
-    .replace(/đ/g, "d");
+    .replace(
+      /đ/g,
+      "d"
+    );
 
 }
 
 
 // ========================================================
-// RENDER CUSTOMERS
+// HIỂN THỊ DANH SÁCH
 // ========================================================
 
 function renderCustomers() {
@@ -2060,7 +2280,9 @@ function renderCustomers() {
 
   const search =
     document
-      .getElementById("searchInput")
+      .getElementById(
+        "searchInput"
+      )
       .value
       .trim()
       .toLowerCase();
@@ -2097,7 +2319,11 @@ function renderCustomers() {
 
 
   filtered.forEach(
-    function(customer, index) {
+    function(
+      customer,
+      index
+    ) {
+
 
       const realIndex =
         customers.indexOf(
@@ -2111,14 +2337,6 @@ function renderCustomers() {
         );
 
 
-      const phoneHtml =
-        customer.phone
-          ? escapeHtml(
-              customer.phone
-            )
-          : '<span style="color:#dc2626">Chưa có</span>';
-
-
       tr.innerHTML = `
 
         <td>
@@ -2127,23 +2345,37 @@ function renderCustomers() {
 
         <td>
           <strong>
-            ${escapeHtml(customer.name)}
+            ${escapeHtml(
+              customer.name
+            )}
           </strong>
         </td>
 
         <td>
-          ${phoneHtml}
+          ${
+            customer.phone
+              ? escapeHtml(
+                  customer.phone
+                )
+              : '<span style="color:#dc2626">Chưa có</span>'
+          }
         </td>
 
         <td>
+
           <strong>
-            ${formatMoney(customer.amount)} đ
+            ${formatMoney(
+              customer.amount
+            )} đ
           </strong>
+
         </td>
 
         <td>
           ${escapeHtml(
-            String(customer.days || "0")
+            String(
+              customer.days || "0"
+            )
           )} ngày
         </td>
 
@@ -2201,11 +2433,13 @@ function renderCustomers() {
 
 
 // ========================================================
-// SEARCH
+// TÌM KIẾM
 // ========================================================
 
 document
-  .getElementById("searchInput")
+  .getElementById(
+    "searchInput"
+  )
   .addEventListener(
     "input",
     renderCustomers
@@ -2213,7 +2447,7 @@ document
 
 
 // ========================================================
-// UPDATE STATS
+// THỐNG KÊ
 // ========================================================
 
 function updateStats() {
@@ -2224,40 +2458,42 @@ function updateStats() {
 
   const phones =
     customers.filter(
-      function(c) {
+      function(customer) {
 
-        return !!c.phone;
+        return !!customer.phone;
 
       }
     ).length;
 
 
-  const missing =
-    total - phones;
-
-
   document
-    .getElementById("totalCustomers")
+    .getElementById(
+      "totalCustomers"
+    )
     .textContent =
     total;
 
 
   document
-    .getElementById("totalPhones")
+    .getElementById(
+      "totalPhones"
+    )
     .textContent =
     phones;
 
 
   document
-    .getElementById("totalMissingPhones")
+    .getElementById(
+      "totalMissingPhones"
+    )
     .textContent =
-    missing;
+    total - phones;
 
 }
 
 
 // ========================================================
-// DELETE
+// XÓA KHÁCH HÀNG
 // ========================================================
 
 function deleteCustomer(index) {
@@ -2269,18 +2505,18 @@ function deleteCustomer(index) {
   if (!customer) {
 
     return;
+
   }
 
 
-  const ok =
-    confirm(
+  if (
+    !confirm(
       `Bạn có chắc muốn xóa ${customer.name}?`
-    );
-
-
-  if (!ok) {
+    )
+  ) {
 
     return;
+
   }
 
 
@@ -2301,10 +2537,12 @@ function deleteCustomer(index) {
 
 
 // ========================================================
-// CREATE MESSAGE
+// TẠO TIN NHẮN
 // ========================================================
 
-function createMessage(customer) {
+function createMessage(
+  customer
+) {
 
   const name =
     customer.name ||
@@ -2346,7 +2584,7 @@ Trân trọng.`;
 
 
 // ========================================================
-// VIEW MESSAGE
+// XEM TIN NHẮN
 // ========================================================
 
 function viewMessage(index) {
@@ -2358,6 +2596,7 @@ function viewMessage(index) {
   if (!customer) {
 
     return;
+
   }
 
 
@@ -2366,7 +2605,9 @@ function viewMessage(index) {
 
 
   document
-    .getElementById("messagePreview")
+    .getElementById(
+      "messagePreview"
+    )
     .textContent =
     createMessage(
       customer
@@ -2374,23 +2615,31 @@ function viewMessage(index) {
 
 
   document
-    .getElementById("messageModal")
+    .getElementById(
+      "messageModal"
+    )
     .classList
-    .add("show");
+    .add(
+      "show"
+    );
 
 }
 
 
 // ========================================================
-// CLOSE MODAL
+// ĐÓNG MODAL
 // ========================================================
 
 function closeModal() {
 
   document
-    .getElementById("messageModal")
+    .getElementById(
+      "messageModal"
+    )
     .classList
-    .remove("show");
+    .remove(
+      "show"
+    );
 
 
   currentCustomer =
@@ -2400,7 +2649,7 @@ function closeModal() {
 
 
 // ========================================================
-// COPY MESSAGE
+// SAO CHÉP TIN NHẮN
 // ========================================================
 
 async function copyCurrentMessage() {
@@ -2408,6 +2657,7 @@ async function copyCurrentMessage() {
   if (!currentCustomer) {
 
     return;
+
   }
 
 
@@ -2430,10 +2680,6 @@ async function copyCurrentMessage() {
 
 
   } catch (error) {
-
-    /*
-      Fallback cho một số trình duyệt
-    */
 
     const textarea =
       document.createElement(
@@ -2471,7 +2717,7 @@ async function copyCurrentMessage() {
 
 
 // ========================================================
-// SEND SMS
+// GỬI SMS
 // ========================================================
 
 function sendCurrentSMS() {
@@ -2479,6 +2725,7 @@ function sendCurrentSMS() {
   if (!currentCustomer) {
 
     return;
+
   }
 
 
@@ -2495,6 +2742,7 @@ function sendCurrentSMS() {
     );
 
     return;
+
   }
 
 
@@ -2505,9 +2753,7 @@ function sendCurrentSMS() {
 
 
   /*
-    Mở trình nhắn tin của thiết bị.
-
-    Người dùng vẫn phải xác nhận gửi.
+    Mở ứng dụng SMS của thiết bị.
   */
 
   const smsUrl =
@@ -2528,13 +2774,15 @@ function sendCurrentSMS() {
 
 
 // ========================================================
-// SCROLL FORM
+// CUỘN ĐẾN FORM
 // ========================================================
 
 function scrollToForm() {
 
   document
-    .getElementById("manualForm")
+    .getElementById(
+      "manualForm"
+    )
     .scrollIntoView({
       behavior: "smooth"
     });
@@ -2579,11 +2827,13 @@ function escapeHtml(value) {
 
 
 // ========================================================
-// CLICK OUTSIDE MODAL
+// CLICK RA NGOÀI MODAL
 // ========================================================
 
 document
-  .getElementById("messageModal")
+  .getElementById(
+    "messageModal"
+  )
   .addEventListener(
     "click",
     function(event) {
@@ -2601,7 +2851,7 @@ document
 
 
 // ========================================================
-// ESC KEY
+// PHÍM ESC
 // ========================================================
 
 document.addEventListener(
@@ -2621,7 +2871,7 @@ document.addEventListener(
 
 
 // ========================================================
-// INITIAL
+// KHỞI TẠO
 // ========================================================
 
 renderCustomers();
